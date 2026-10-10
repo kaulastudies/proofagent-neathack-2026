@@ -1,0 +1,45 @@
+{
+  "case": "transient_failure",
+  "attempts": 2,
+  "events": [
+    {
+      "step": "plan",
+      "attempt": 1,
+      "action": "compute_and_verify"
+    },
+    {
+      "step": "tool_error",
+      "attempt": 1,
+      "type": "TimeoutError",
+      "reason": "simulated transient tool timeout"
+    },
+    {
+      "step": "recover",
+      "action": "retry_transient_tool_failure"
+    },
+    {
+      "step": "plan",
+      "attempt": 2,
+      "action": "compute_and_verify"
+    },
+    {
+      "step": "verify",
+      "attempt": 2,
+      "checks": {
+        "matches_independent_oracle": true,
+        "matches_acceptance_spec": true,
+        "independent_result": 12
+      }
+    }
+  ],
+  "verdict": "VERIFIED_PASS",
+  "artifact": {
+    "candidate": 12,
+    "expected": 12,
+    "checks": {
+      "matches_independent_oracle": true,
+      "matches_acceptance_spec": true,
+      "independent_result": 12
+    }
+  }
+}

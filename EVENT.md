@@ -3,6 +3,8 @@
 Team: AI Evaluation Lab
 Project: ProofAgent
 
-This repository was created on October 10, 2026, during the event. The billing repair prototype was written during the event. Earlier AI Evaluation Lab work remains in its separate repository.
+This repository was created October 10, 2026, during the event. Billing repair prototype code was written during the event. Pre-existing AI Evaluation Lab work remains separate.
 
-Current milestone: independent verification and resumable repair workflow. Live model execution, Entire checkpoint, cfo.ai export and final submission remain pending.
+Rama Chandra: kaulastudies. Nithy: nithyaravikumar1518-web (collaborator invitation pending acceptance; participant registration still unverified).
+
+No Entire checkpoint or cfo.ai export has been fabricated. Live model execution remains unverified.

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "binding": {
+    "case": "discount",
+    "fixture_sha256": {
+      "calculator.py": "2715cc26e27aeaf59d0ba78be5f65852081a038522e5b42450f71c36ffa977e9",
+      "tests/test_calculator.py": "2c362657ea9c64fb1e94c32a642f9f8dd39fb9f106ac83f6bdb0c00655113dac"
+    },
+    "planner": "offline-replay:[\"subtotal\",\"subtotal - discount\"]",
+    "max_attempts": 3
+  },
+  "verdict": "VERIFIED_PASS",
+  "baseline": {
+    "passed": false,
+    "exit_code": 1,
+    "output": "test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount) ... FAIL\ntest_no_discount (test_calculator.AcceptanceTests.test_no_discount) ... ok\ntest_single_discount (test_calculator.AcceptanceTests.test_single_discount) ... FAIL\n\n======================================================================\nFAIL: test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-9k30wi54/fixture/tests/test_calculator.py\", line 13, in test_boundary_full_discount\n    self.assertEqual(calculate_total([10, 20], 30), 0)\nAssertionError: -30 != 0\n\n======================================================================\nFAIL: test_single_discount (test_calculator.AcceptanceTests.test_single_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-9k30wi54/fixture/tests/test_calculator.py\", line 10, in test_single_discount\n    self.assertEqual(calculate_total([10, 20], 5), 25)\nAssertionError: 20 != 25\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)\n",
+    "timed_out": false
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "proposal": {
+        "expression": "subtotal",
+        "reason": "Scripted offline replay; not model reasoning"
+      },
+      "verification": {
+        "passed": false,
+        "exit_code": 1,
+        "output": "test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount) ... FAIL\ntest_no_discount (test_calculator.AcceptanceTests.test_no_discount) ... ok\ntest_single_discount (test_calculator.AcceptanceTests.test_single_discount) ... FAIL\n\n======================================================================\nFAIL: test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-candidate-mwqhbp83/fixture/tests/test_calculator.py\", line 13, in test_boundary_full_discount\n    self.assertEqual(calculate_total([10, 20], 30), 0)\nAssertionError: 30 != 0\n\n======================================================================\nFAIL: test_single_discount (test_calculator.AcceptanceTests.test_single_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-candidate-mwqhbp83/fixture/tests/test_calculator.py\", line 10, in test_single_discount\n    self.assertEqual(calculate_total([10, 20], 5), 25)\nAssertionError: 30 != 25\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=2)\n",
+        "timed_out": false
+      },
+      "files_unchanged_except_patch": true,
+      "source_after_sha256": "1c2f7d4f49f6194924e0c0310574e9b39396e16b69a40b2ed2d42d02a7c8b85b",
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -4,4 +4,4 @@\n def calculate_total(prices, discount=0):\n     subtotal = sum(prices)\n     # Bug: discount is subtracted here and then again in the return expression.\n-    return (subtotal - discount) - discount\n+    return subtotal\n",
+      "status": "VERIFIED_FAIL"
+    },
+    {
+      "number": 2,
+      "proposal": {
+        "expression": "subtotal - discount",
+        "reason": "Scripted offline replay; not model reasoning"
+      },
+      "verification": {
+        "passed": true,
+        "exit_code": 0,
+        "output": "test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount) ... ok\ntest_no_discount (test_calculator.AcceptanceTests.test_no_discount) ... ok\ntest_single_discount (test_calculator.AcceptanceTests.test_single_discount) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+        "timed_out": false
+      },
+      "files_unchanged_except_patch": true,
+      "source_after_sha256": "3621aa9a6c4511c69f156f5a117e3fe6f97ab76e69baee75c6c27d3da88bb906",
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -4,4 +4,4 @@\n def calculate_total(prices, discount=0):\n     subtotal = sum(prices)\n     # Bug: discount is subtracted here and then again in the return expression.\n-    return (subtotal - discount) - discount\n+    return subtotal - discount\n",
+      "status": "VERIFIED_PASS"
+    }
+  ],
+  "events": [
+    "baseline_recorded",
+    "attempt_1_VERIFIED_FAIL",
+    "attempt_2_VERIFIED_PASS"
+  ],
+  "original_unchanged": true,
+  "accepted_expression": "subtotal - discount"
+}

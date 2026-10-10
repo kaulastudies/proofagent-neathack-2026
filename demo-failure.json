@@ -1,0 +1,34 @@
+{
+  "case": "incorrect_output",
+  "attempts": 1,
+  "events": [
+    {
+      "step": "plan",
+      "attempt": 1,
+      "action": "compute_and_verify"
+    },
+    {
+      "step": "verify",
+      "attempt": 1,
+      "checks": {
+        "matches_independent_oracle": true,
+        "matches_acceptance_spec": false,
+        "independent_result": 12
+      }
+    },
+    {
+      "step": "stop",
+      "reason": "deterministic_acceptance_failure"
+    }
+  ],
+  "verdict": "VERIFIED_FAIL",
+  "artifact": {
+    "candidate": 12,
+    "expected": 13,
+    "checks": {
+      "matches_independent_oracle": true,
+      "matches_acceptance_spec": false,
+      "independent_result": 12
+    }
+  }
+}

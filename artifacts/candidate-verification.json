@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "verdict": "VERIFIED_PASS",
+  "planner": "supplied_candidates",
+  "tests_sha256": {
+    "test_calculator.py": "2c362657ea9c64fb1e94c32a642f9f8dd39fb9f106ac83f6bdb0c00655113dac"
+  },
+  "source_before_sha256": "2715cc26e27aeaf59d0ba78be5f65852081a038522e5b42450f71c36ffa977e9",
+  "attempts": [
+    {
+      "number": 1,
+      "expression": "subtotal",
+      "verification": {
+        "passed": false,
+        "exit_code": 1,
+        "output": "test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount) ... FAIL\ntest_no_discount (test_calculator.AcceptanceTests.test_no_discount) ... ok\ntest_single_discount (test_calculator.AcceptanceTests.test_single_discount) ... FAIL\n\n======================================================================\nFAIL: test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proofagent-verify-cz8f4x99/candidate-1/tests/test_calculator.py\", line 13, in test_boundary_full_discount\n    self.assertEqual(calculate_total([10, 20], 30), 0)\nAssertionError: 30 != 0\n\n======================================================================\nFAIL: test_single_discount (test_calculator.AcceptanceTests.test_single_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proofagent-verify-cz8f4x99/candidate-1/tests/test_calculator.py\", line 10, in test_single_discount\n    self.assertEqual(calculate_total([10, 20], 5), 25)\nAssertionError: 30 != 25\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)\n",
+        "timed_out": false
+      },
+      "tests_unchanged": true,
+      "source_after_sha256": "1c2f7d4f49f6194924e0c0310574e9b39396e16b69a40b2ed2d42d02a7c8b85b",
+      "status": "VERIFIED_FAIL"
+    },
+    {
+      "number": 2,
+      "expression": "subtotal - discount",
+      "verification": {
+        "passed": true,
+        "exit_code": 0,
+        "output": "test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount) ... ok\ntest_no_discount (test_calculator.AcceptanceTests.test_no_discount) ... ok\ntest_single_discount (test_calculator.AcceptanceTests.test_single_discount) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+        "timed_out": false
+      },
+      "tests_unchanged": true,
+      "source_after_sha256": "3621aa9a6c4511c69f156f5a117e3fe6f97ab76e69baee75c6c27d3da88bb906",
+      "status": "VERIFIED_PASS"
+    }
+  ],
+  "baseline": {
+    "passed": false,
+    "exit_code": 1,
+    "output": "test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount) ... FAIL\ntest_no_discount (test_calculator.AcceptanceTests.test_no_discount) ... ok\ntest_single_discount (test_calculator.AcceptanceTests.test_single_discount) ... FAIL\n\n======================================================================\nFAIL: test_boundary_full_discount (test_calculator.AcceptanceTests.test_boundary_full_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proofagent-verify-cz8f4x99/baseline/tests/test_calculator.py\", line 13, in test_boundary_full_discount\n    self.assertEqual(calculate_total([10, 20], 30), 0)\nAssertionError: -30 != 0\n\n======================================================================\nFAIL: test_single_discount (test_calculator.AcceptanceTests.test_single_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proofagent-verify-cz8f4x99/baseline/tests/test_calculator.py\", line 10, in test_single_discount\n    self.assertEqual(calculate_total([10, 20], 5), 25)\nAssertionError: 20 != 25\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=2)\n",
+    "timed_out": false
+  },
+  "accepted_expression": "subtotal - discount",
+  "original_unchanged": true
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "binding": {
+    "case": "tax",
+    "fixture_sha256": {
+      "calculator.py": "325113dfb4955c4f56217af8c58476203fef3d318dbe8033df6e9ae749af4c0b",
+      "tests/test_calculator.py": "75d16634b681ffdf1789d2541fbceb415961abe70f8e72a46ff83cdf52c7ed23"
+    },
+    "planner": "offline-replay:[\"subtotal - discount\",\"(subtotal - discount) * (1 + tax_rate)\"]",
+    "max_attempts": 3
+  },
+  "verdict": "VERIFIED_PASS",
+  "baseline": {
+    "passed": false,
+    "exit_code": 1,
+    "output": "test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax) ... FAIL\ntest_full_discount (test_calculator.Acceptance.test_full_discount) ... FAIL\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... ok\ntest_zero_tax (test_calculator.Acceptance.test_zero_tax) ... ok\n\n======================================================================\nFAIL: test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-030l_06e/fixture/tests/test_calculator.py\", line 6, in test_discount_before_tax\n    self.assertAlmostEqual(calculate_total(100, 20, .1), 88)\nAssertionError: 90.00000000000001 != 88 within 7 places (2.000000000000014 difference)\n\n======================================================================\nFAIL: test_full_discount (test_calculator.Acceptance.test_full_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-030l_06e/fixture/tests/test_calculator.py\", line 10, in test_full_discount\n    self.assertEqual(calculate_total(100, 100, .1), 0)\nAssertionError: 10.000000000000014 != 0\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=2)\n",
+    "timed_out": false
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "proposal": {
+        "expression": "subtotal - discount",
+        "reason": "Scripted offline replay; not model reasoning"
+      },
+      "verification": {
+        "passed": false,
+        "exit_code": 1,
+        "output": "test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax) ... FAIL\ntest_full_discount (test_calculator.Acceptance.test_full_discount) ... ok\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... FAIL\ntest_zero_tax (test_calculator.Acceptance.test_zero_tax) ... ok\n\n======================================================================\nFAIL: test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-candidate-dbw10hfo/fixture/tests/test_calculator.py\", line 6, in test_discount_before_tax\n    self.assertAlmostEqual(calculate_total(100, 20, .1), 88)\nAssertionError: 80 != 88 within 7 places (8 difference)\n\n======================================================================\nFAIL: test_no_discount (test_calculator.Acceptance.test_no_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-candidate-dbw10hfo/fixture/tests/test_calculator.py\", line 8, in test_no_discount\n    self.assertAlmostEqual(calculate_total(100, 0, .1), 110)\nAssertionError: 100 != 110 within 7 places (10 difference)\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nFAILED (failures=2)\n",
+        "timed_out": false
+      },
+      "files_unchanged_except_patch": true,
+      "source_after_sha256": "5b29fe5677ac67fbc96ad0473a855d3ac6f1ded254906ea66d1a624234dc376f",
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,2 @@\n def calculate_total(subtotal, discount, tax_rate):\n-    return subtotal * (1 + tax_rate) - discount\n+    return subtotal - discount\n",
+      "status": "VERIFIED_FAIL"
+    },
+    {
+      "number": 2,
+      "proposal": {
+        "expression": "(subtotal - discount) * (1 + tax_rate)",
+        "reason": "Scripted offline replay; not model reasoning"
+      },
+      "verification": {
+        "passed": true,
+        "exit_code": 0,
+        "output": "test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax) ... ok\ntest_full_discount (test_calculator.Acceptance.test_full_discount) ... ok\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... ok\ntest_zero_tax (test_calculator.Acceptance.test_zero_tax) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+        "timed_out": false
+      },
+      "files_unchanged_except_patch": true,
+      "source_after_sha256": "54c8058a924d82f4eb43948911ccfe566e97e080d24d7036bd933aec95d93736",
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,2 @@\n def calculate_total(subtotal, discount, tax_rate):\n-    return subtotal * (1 + tax_rate) - discount\n+    return (subtotal - discount) * (1 + tax_rate)\n",
+      "status": "VERIFIED_PASS"
+    }
+  ],
+  "events": [
+    "baseline_recorded",
+    "attempt_1_VERIFIED_FAIL",
+    "attempt_2_VERIFIED_PASS"
+  ],
+  "original_unchanged": true,
+  "accepted_expression": "(subtotal - discount) * (1 + tax_rate)"
+}

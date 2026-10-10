@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "binding": {
+    "case": "shipping",
+    "fixture_sha256": {
+      "calculator.py": "cfbe3cc0d129040c5a4484a0963534f295ff9d6b267031840d9b0782f0c8d96b",
+      "tests/test_calculator.py": "5cdda326501106f8f3bbe84f22bbfebf821f1c22bb21fd8a498a18f0087d3f42"
+    },
+    "planner": "offline-replay:[\"subtotal - discount\",\"subtotal - discount + shipping\"]",
+    "max_attempts": 3
+  },
+  "verdict": "VERIFIED_PASS",
+  "baseline": {
+    "passed": false,
+    "exit_code": 1,
+    "output": "test_discount_once (test_calculator.Acceptance.test_discount_once) ... FAIL\ntest_free_shipping (test_calculator.Acceptance.test_free_shipping) ... FAIL\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... ok\ntest_shipping_retained (test_calculator.Acceptance.test_shipping_retained) ... FAIL\n\n======================================================================\nFAIL: test_discount_once (test_calculator.Acceptance.test_discount_once)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-_d87gfjm/fixture/tests/test_calculator.py\", line 6, in test_discount_once\n    self.assertEqual(calculate_total(100, 20, 5), 85)\nAssertionError: 65 != 85\n\n======================================================================\nFAIL: test_free_shipping (test_calculator.Acceptance.test_free_shipping)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-_d87gfjm/fixture/tests/test_calculator.py\", line 10, in test_free_shipping\n    self.assertEqual(calculate_total(100, 20, 0), 80)\nAssertionError: 60 != 80\n\n======================================================================\nFAIL: test_shipping_retained (test_calculator.Acceptance.test_shipping_retained)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-_d87gfjm/fixture/tests/test_calculator.py\", line 8, in test_shipping_retained\n    self.assertEqual(calculate_total(100, 100, 5), 5)\nAssertionError: -95 != 5\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=3)\n",
+    "timed_out": false
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "proposal": {
+        "expression": "subtotal - discount",
+        "reason": "Scripted offline replay; not model reasoning"
+      },
+      "verification": {
+        "passed": false,
+        "exit_code": 1,
+        "output": "test_discount_once (test_calculator.Acceptance.test_discount_once) ... FAIL\ntest_free_shipping (test_calculator.Acceptance.test_free_shipping) ... ok\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... FAIL\ntest_shipping_retained (test_calculator.Acceptance.test_shipping_retained) ... FAIL\n\n======================================================================\nFAIL: test_discount_once (test_calculator.Acceptance.test_discount_once)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-candidate-nlhml6ai/fixture/tests/test_calculator.py\", line 6, in test_discount_once\n    self.assertEqual(calculate_total(100, 20, 5), 85)\nAssertionError: 80 != 85\n\n======================================================================\nFAIL: test_no_discount (test_calculator.Acceptance.test_no_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-candidate-nlhml6ai/fixture/tests/test_calculator.py\", line 12, in test_no_discount\n    self.assertEqual(calculate_total(100, 0, 5), 105)\nAssertionError: 100 != 105\n\n======================================================================\nFAIL: test_shipping_retained (test_calculator.Acceptance.test_shipping_retained)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-candidate-nlhml6ai/fixture/tests/test_calculator.py\", line 8, in test_shipping_retained\n    self.assertEqual(calculate_total(100, 100, 5), 5)\nAssertionError: 0 != 5\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=3)\n",
+        "timed_out": false
+      },
+      "files_unchanged_except_patch": true,
+      "source_after_sha256": "3300ea556ffb36fd9d3d509c64d916506868fa72fe411131a5c2bcc5da526117",
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,2 @@\n def calculate_total(subtotal, discount, shipping):\n-    return (subtotal + shipping) - discount * 2\n+    return subtotal - discount\n",
+      "status": "VERIFIED_FAIL"
+    },
+    {
+      "number": 2,
+      "proposal": {
+        "expression": "subtotal - discount + shipping",
+        "reason": "Scripted offline replay; not model reasoning"
+      },
+      "verification": {
+        "passed": true,
+        "exit_code": 0,
+        "output": "test_discount_once (test_calculator.Acceptance.test_discount_once) ... ok\ntest_free_shipping (test_calculator.Acceptance.test_free_shipping) ... ok\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... ok\ntest_shipping_retained (test_calculator.Acceptance.test_shipping_retained) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+        "timed_out": false
+      },
+      "files_unchanged_except_patch": true,
+      "source_after_sha256": "3f98b4f05e5f19fc186b3099f00d80dc8c7e12a1bfba7b2330cb7af4e6f6d2e7",
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,2 @@\n def calculate_total(subtotal, discount, shipping):\n-    return (subtotal + shipping) - discount * 2\n+    return subtotal - discount + shipping\n",
+      "status": "VERIFIED_PASS"
+    }
+  ],
+  "events": [
+    "baseline_recorded",
+    "attempt_1_VERIFIED_FAIL",
+    "attempt_2_VERIFIED_PASS"
+  ],
+  "original_unchanged": true,
+  "accepted_expression": "subtotal - discount + shipping"
+}
