@@ -1,0 +1,36 @@
+{
+  "mode": "offline-replay",
+  "cases": [
+    {
+      "case": "discount",
+      "baseline_passed": false,
+      "attempts": [
+        "VERIFIED_FAIL",
+        "VERIFIED_PASS"
+      ],
+      "verdict": "VERIFIED_PASS",
+      "original_unchanged": true
+    },
+    {
+      "case": "tax",
+      "baseline_passed": false,
+      "attempts": [
+        "VERIFIED_FAIL",
+        "VERIFIED_PASS"
+      ],
+      "verdict": "VERIFIED_PASS",
+      "original_unchanged": true
+    },
+    {
+      "case": "shipping",
+      "baseline_passed": false,
+      "attempts": [
+        "VERIFIED_FAIL",
+        "VERIFIED_PASS"
+      ],
+      "verdict": "VERIFIED_PASS",
+      "original_unchanged": true
+    }
+  ],
+  "resume_verdict": "VERIFIED_PASS"
+}

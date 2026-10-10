@@ -14,7 +14,9 @@ ProofAgent repairs arithmetic defects in three trusted billing fixtures. It runs
 - Offline replay mode for reproducible evidence, explicitly labeled as scripted.
 - Gemini structured-output planner implemented; live execution awaits an API key and validation.
 - Neatlogs ingestion for the earlier candidate-verification demo was observed on October 10: one rejected repair and one verified recovery. New model spans are not yet verified.
-- 18 regression tests pass locally.
+- 18 regression tests pass locally. GitHub Actions checks Linux and Windows.
+
+Run `python demo-run.py` for a compact credential-free demonstration of all three cases and checkpoint recovery. All proposals in this demo are scripted offline replay; tests execute normally.
 
 ## Run without credentials
 
