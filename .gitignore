@@ -7,3 +7,4 @@ __pycache__/
 artifacts/live-*.json
 *.tmp
 artifacts/demo-frames/
+artifacts/crustdata-*-private.json

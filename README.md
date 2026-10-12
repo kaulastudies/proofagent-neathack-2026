@@ -96,6 +96,16 @@ Entire instructions: https://hack.entire.io/neathacks-2026/ and https://github.c
 
 No credentials belong in this repository.
 
+## Optional Crustdata pilot research
+
+Nithya (`nithyaravikumar1518-web`) has accepted repository collaborator access; write permission was verified on October 12. Hackathon registration is a separate requirement.
+
+`python crustdata_pilots.py` privately prompts for `CRUSTDATA_API_KEY` and performs one company search, with at most five results, no automatic retry and no pagination. It keeps company name, domain, description and Crustdata ID only. The resulting private report labels matches as research candidates, never customers, revenue or verified demand. It does not send outreach or change the repair acceptance gate.
+
+Status: implemented and tested with synthetic responses; live Crustdata verification is pending a separate Crustdata API key and confirmed hackathon credit access. The LiteLLM key cannot authenticate Crustdata. No Crustdata usage is claimed in the existing demo.
+
+API documentation: https://docs.crustdata.com/company-docs/search/introduction . Actual credit consumption remains unknown until account usage is checked.
+
 ## Reproduce the video
 
 On Linux with DejaVu fonts, Pillow, Poppler (`pdftoppm`) and FFmpeg installed, run `python render_demo.py`. The renderer uses the committed trace screenshots, live verification report and original cfo.ai export; it makes no model calls. Scene timings are recorded in `artifacts/demo-scenes.json`. Generated frames are excluded from Git.
