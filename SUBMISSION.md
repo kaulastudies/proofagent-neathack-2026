@@ -10,7 +10,7 @@ Team: **AI Evaluation Lab**
 
 Leader: **Rama Chandra** (`kaulastudies`)
 
-Nithya (`nithyaravikumar1518-web`) has verified GitHub write access. Confirm her event check-in before listing her as a registered co-participant; GitHub access alone is not event registration.
+Nithya (`nithyaravikumar1518-web`) has verified GitHub write access. Rama confirmed her event registration on October 12, 2026.
 
 ## Short description
 
@@ -81,12 +81,12 @@ Deadline announced in organizer Discord: October 12, 11:55 PM IST. Check Discord
 
 - [ ] Resolve or explicitly disclose the incidents-feature evidence gap; no published incident currently exists in the dashboard.
 - [ ] Complete/verify Entire mirror, approved hooks and a genuine checkpoint requested in the setup email, or obtain organizer clarification on the existing Graph evidence.
-- [ ] Confirm Nithya's event check-in.
+- [x] Nithya's event registration confirmed by Rama on October 12, 2026.
 - [ ] Publish a public quote of the exact launch post, with the video attached and all three required tags.
 - [ ] Copy the actual published quote URL into the submission form; complete the project/team fields and review.
 - [x] Submission receipt confirmed from the organizer's success page on October 12, 2026. Reference: `745d0a84-9b92-46ca-a8d0-d4af0ac3af7f`.
 
-The remaining unchecked items are verification follow-ups, not an instruction to submit again. The receipt does not independently establish Nithya's event registration or the contents of the published quote.
+The remaining unchecked items are verification follow-ups, not an instruction to submit again. Nithya's registration is separately confirmed by Rama. The contents of the published quote remain a separate evidence-review task.
 
 ## Limits
 
