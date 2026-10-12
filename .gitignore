@@ -6,3 +6,4 @@ __pycache__/
 *key*
 artifacts/live-*.json
 *.tmp
+artifacts/demo-frames/

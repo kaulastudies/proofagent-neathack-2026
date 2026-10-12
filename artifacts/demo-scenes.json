@@ -1,0 +1,47 @@
+[
+  {
+    "scene": 1,
+    "seconds": 10,
+    "frame": "01.png"
+  },
+  {
+    "scene": 2,
+    "seconds": 18,
+    "frame": "02.png"
+  },
+  {
+    "scene": 3,
+    "seconds": 18,
+    "frame": "03.png"
+  },
+  {
+    "scene": 4,
+    "seconds": 18,
+    "frame": "04.png"
+  },
+  {
+    "scene": 5,
+    "seconds": 15,
+    "frame": "05.png"
+  },
+  {
+    "scene": 6,
+    "seconds": 16,
+    "frame": "06.png"
+  },
+  {
+    "scene": 7,
+    "seconds": 16,
+    "frame": "07.png"
+  },
+  {
+    "scene": 8,
+    "seconds": 18,
+    "frame": "08.png"
+  },
+  {
+    "scene": 9,
+    "seconds": 12,
+    "frame": "09.png"
+  }
+]

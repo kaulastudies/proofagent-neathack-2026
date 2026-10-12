@@ -4,6 +4,10 @@
 
 Team: **AI Evaluation Lab**. Event code lives here; the pre-existing AI Evaluation Lab repository remains separate.
 
+**[Watch the 2:21 demo](artifacts/ProofAgent_neatHack_demo.mp4)** · [Live verification report](artifacts/neatlogs/live-tax-verified.json) · [cfo.ai business plan](docs/cfo/ProofAgent_Business_Plan_Updated.pdf)
+
+The demo is a silent, captioned walkthrough of actual artifacts, rather than an interactive screen recording. It distinguishes the real Claude run from scripted recovery tests.
+
 ProofAgent repairs arithmetic defects in three trusted billing fixtures. It runs the failing baseline, asks a planner for a restricted arithmetic expression, applies the proposal in a temporary copy, and checks unchanged acceptance tests. Failed proposals feed back to the planner. A verified attempt is saved atomically so another process can resume without repeating earlier attempts.
 
 ## What works
@@ -82,7 +86,7 @@ This is a bounded repair/evaluation agent on bundled trusted fixtures. It does n
 - [x] Live Claude Haiku tax repair independently verified and ingested into neatlogs; before/after parser-fix traces in `artifacts/neatlogs/`
 - [x] Entire Graph search, impact analysis and verification evidence captured in `artifacts/entire/` (Graph route; no session checkpoint)
 - [x] Original cfo.ai business-plan export and independent arithmetic review in `docs/cfo/` and `artifacts/cfo/`
-- [ ] Three-minute demonstration with all required integrations
+- [x] 2:21 captioned evidence walkthrough covering all three required integrations
 - [ ] Team co-participant registration verified separately from GitHub access
 - [ ] Official X submission during the announced window
 
@@ -91,3 +95,7 @@ Entire instructions: https://hack.entire.io/neathacks-2026/ and https://github.c
 `docs/cfo/ProofAgent_Business_Plan_Updated.pdf` is the original cfo.ai export. Run `python verify_business_plan.py` to reproduce its arithmetic check. All financial forecasts are hypothetical; opening cash and runway are uncalculated. `business-plan-input.md` is an earlier input sheet, not the export. The starter scripts `agent.py`, `repair_agent.py` and `verified_workflow.py` are retained for reproducibility; their deterministic scenarios must be described accurately.
 
 No credentials belong in this repository.
+
+## Reproduce the video
+
+On Linux with DejaVu fonts, Pillow, Poppler (`pdftoppm`) and FFmpeg installed, run `python render_demo.py`. The renderer uses the committed trace screenshots, live verification report and original cfo.ai export; it makes no model calls. Scene timings are recorded in `artifacts/demo-scenes.json`. Generated frames are excluded from Git.
