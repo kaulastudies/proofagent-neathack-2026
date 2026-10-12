@@ -3,10 +3,21 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
-from model_planner import LiteLLMPlanner
+from model_planner import LiteLLMPlanner, parse_gateway_proposal
 from resumable_agent import run
 
 class GatewayTests(unittest.TestCase):
+    def test_complete_json_fence_is_normalized(self):
+        content='```json\n{"expression":"subtotal - discount","reason":"apply once"}\n```'
+        proposal,normalization=parse_gateway_proposal(content)
+        self.assertEqual(normalization,'complete_json_fence')
+        self.assertEqual(proposal['expression'],'subtotal - discount')
+
+    def test_prose_and_extra_fields_are_not_mined_for_repairs(self):
+        for text in ['Here is a fix: ```json\n{"expression":"subtotal"}\n```',
+                     '{"expression":"subtotal","reason":"x","command":"echo bypass"}']:
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                parse_gateway_proposal(text)
     def client(self, content, finish='stop'):
         response = SimpleNamespace(choices=[SimpleNamespace(finish_reason=finish,
             message=SimpleNamespace(content=content))], usage=SimpleNamespace(

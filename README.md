@@ -13,8 +13,8 @@ ProofAgent repairs arithmetic defects in three trusted billing fixtures. It runs
 - Actual process interruption and recovery from a saved checkpoint.
 - Offline replay mode for reproducible evidence, explicitly labeled as scripted.
 - Gemini structured-output planner implemented; live execution awaits an API key and validation.
-- Neatlogs ingestion for the earlier candidate-verification demo was observed on October 10: one rejected repair and one verified recovery. New model spans are not yet verified.
-- 25 regression tests pass locally. GitHub Actions checks Linux and Windows.
+- Neatlogs ingestion for the earlier candidate-verification demo was observed on October 10: one rejected repair and one verified recovery. The actual Claude Haiku tax-repair trace was also observed after the gateway formatting fix; see `artifacts/neatlogs/`.
+- 27 regression tests pass locally. GitHub Actions checks Linux and Windows.
 
 Run `python demo-run.py` for a compact credential-free demonstration of all three cases and checkpoint recovery. All proposals in this demo are scripted offline replay; tests execute normally.
 
@@ -47,9 +47,9 @@ python -m venv .venv
 .venv/bin/python live_demo.py --case tax
 ```
 
-The launcher prompts privately for the LiteLLM key and neatlogs project key; it does not write keys to disk. The gateway adapter limits each response to 384 tokens, disables SDK automatic retries, and rejects malformed or truncated proposals. The independent acceptance gate decides success. Token counts and latency are saved in candidate evidence when returned by the provider; dollar cost remains unknown unless supported by provider billing evidence. The organizer's shared $20 budget is enforced by the gateway, not this application.
+The launcher prompts privately for the LiteLLM key and neatlogs project key; it does not write keys to disk. The gateway adapter limits each response to 384 tokens, disables SDK automatic retries, and accepts plain JSON or one complete JSON fence, and rejects prose, malformed or truncated proposals. The independent acceptance gate decides success. Token counts and latency are saved in candidate evidence when returned by the provider; dollar cost remains unknown unless supported by provider billing evidence. The organizer's shared $20 budget is enforced by the gateway, not this application.
 
-The live gateway adapter is implemented and tested offline. A successful actual gateway call and trace ingestion still need to be verified. No replay fallback is substituted for a failed live call.
+A real Claude Haiku tax repair passed unchanged independent tests on October 12 and its five-span trace was observed in neatlogs. The earlier live call failed JSON parsing; accepting one complete JSON fence fixed that formatting failure without changing acceptance tests. The verified call reported 598 input + 150 output tokens, 748 total, and 9.344 seconds of model latency. See `artifacts/neatlogs/` for the report and screenshots. The earlier scripted candidate-rejection demo and interruption tests remain separately labeled evidence. No replay fallback is substituted for a failed live call.
 
 ## Gemini planner (alternative)
 
@@ -79,7 +79,7 @@ This is a bounded repair/evaluation agent on bundled trusted fixtures. It does n
 
 - [x] Public event repository and reproducible test evidence
 - [x] Neatlogs cloud ingestion observed for candidate-verification demo
-- [ ] Live model run and traced feedback/recovery evidence
+- [x] Live Claude Haiku tax repair independently verified and ingested into neatlogs; before/after parser-fix traces in `artifacts/neatlogs/`
 - [x] Entire Graph search, impact analysis and verification evidence captured in `artifacts/entire/` (Graph route; no session checkpoint)
 - [x] Original cfo.ai business-plan export and independent arithmetic review in `docs/cfo/` and `artifacts/cfo/`
 - [ ] Three-minute demonstration with all required integrations

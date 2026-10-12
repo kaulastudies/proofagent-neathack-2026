@@ -63,7 +63,7 @@ def evaluate_expression(fixture, source, config, hashes, expression):
                         fromfile='a/calculator.py', tofile='b/calculator.py')),
             'status': 'VERIFIED_PASS' if verification['passed'] and unchanged else 'VERIFIED_FAIL'}
 
-@trace('AGENT', 'feedback_driven_repair')
+@trace('AGENT', 'feedback_driven_repair', capture_input=False)
 def run(case, planner, state_path, max_attempts=3, stop_after=None):
     if case not in CASES or not 1 <= max_attempts <= 3:
         raise ValueError('Use a registered case and 1–3 attempts')

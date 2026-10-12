@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "binding": {
+    "case": "tax",
+    "fixture_sha256": {
+      "calculator.py": "325113dfb4955c4f56217af8c58476203fef3d318dbe8033df6e9ae749af4c0b",
+      "tests/test_calculator.py": "75d16634b681ffdf1789d2541fbceb415961abe70f8e72a46ff83cdf52c7ed23"
+    },
+    "planner": "litellm:https://litellm.vision.aivar.app/v1:claude-haiku",
+    "max_attempts": 3,
+    "verifier_sha256": {
+      "resumable_agent.py": "dabf7b8790ab5ab2eafad63688511d3d22dca6739beebfe16e16e1f167c5d84b",
+      "verified_workflow.py": "ab0b65cd25d583a4483b6086624f7834be20cde615e5e72722de4da28a07d8c7",
+      "repair_agent.py": "b0a08dd751c4ee401c6e0d579d83b888523267c78db45f7ab32f92926d03fb2f"
+    },
+    "case_spec_sha256": "1d826b2e09a1bf5843b95f330045f64a528cfdacbf141f294a37e7f87827f799"
+  },
+  "verdict": "VERIFIED_PASS",
+  "baseline": {
+    "passed": false,
+    "exit_code": 1,
+    "output": "test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax) ... FAIL\ntest_full_discount (test_calculator.Acceptance.test_full_discount) ... FAIL\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... ok\ntest_zero_tax (test_calculator.Acceptance.test_zero_tax) ... ok\n\n======================================================================\nFAIL: test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-ncsou4xs/fixture/tests/test_calculator.py\", line 6, in test_discount_before_tax\n    self.assertAlmostEqual(calculate_total(100, 20, .1), 88)\nAssertionError: 90.00000000000001 != 88 within 7 places (2.000000000000014 difference)\n\n======================================================================\nFAIL: test_full_discount (test_calculator.Acceptance.test_full_discount)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/proof-baseline-ncsou4xs/fixture/tests/test_calculator.py\", line 10, in test_full_discount\n    self.assertEqual(calculate_total(100, 100, .1), 0)\nAssertionError: 10.000000000000014 != 0\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=2)\n",
+    "timed_out": false
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "proposal": {
+        "expression": "(subtotal - discount) * (1 + tax_rate)",
+        "reason": "The current expression applies tax to the full subtotal then subtracts the discount, which is incorrect. The requirement specifies discount must be applied before tax. The corrected expression subtracts the discount from subtotal first, then applies the tax rate to the discounted amount. This makes test_discount_before_tax return 88 (100-20=80, 80*1.1=88) and test_full_discount return 0 (100-100=0, 0*1.1=0)."
+      },
+      "model_usage": {
+        "provider": "hackathon-litellm",
+        "model": "claude-haiku",
+        "latency_ms": 9344.2,
+        "prompt_tokens": 598,
+        "completion_tokens": 150,
+        "total_tokens": 748,
+        "max_output_tokens": 384,
+        "sdk_auto_retries": 0,
+        "cost_usd": null,
+        "cost_note": "No dollar cost claimed without provider billing evidence",
+        "response_normalization": "complete_json_fence"
+      },
+      "verification": {
+        "passed": true,
+        "exit_code": 0,
+        "output": "test_discount_before_tax (test_calculator.Acceptance.test_discount_before_tax) ... ok\ntest_full_discount (test_calculator.Acceptance.test_full_discount) ... ok\ntest_no_discount (test_calculator.Acceptance.test_no_discount) ... ok\ntest_zero_tax (test_calculator.Acceptance.test_zero_tax) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+        "timed_out": false
+      },
+      "files_unchanged_except_patch": true,
+      "source_after_sha256": "54c8058a924d82f4eb43948911ccfe566e97e080d24d7036bd933aec95d93736",
+      "patch": "--- a/calculator.py\n+++ b/calculator.py\n@@ -1,2 +1,2 @@\n def calculate_total(subtotal, discount, tax_rate):\n-    return subtotal * (1 + tax_rate) - discount\n+    return (subtotal - discount) * (1 + tax_rate)\n",
+      "status": "VERIFIED_PASS"
+    }
+  ],
+  "events": [
+    "baseline_recorded",
+    "attempt_1_VERIFIED_PASS"
+  ],
+  "accepted_expression": "(subtotal - discount) * (1 + tax_rate)",
+  "original_unchanged": true
+}

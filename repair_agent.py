@@ -21,9 +21,9 @@ except ImportError:
     neatlogs = None
 
 
-def trace(kind, name):
+def trace(kind, name, capture_input=True):
     def wrap(fn):
-        return neatlogs.span(kind=kind, name=name)(fn) if neatlogs else fn
+        return neatlogs.span(kind=kind, name=name, capture_input=capture_input)(fn) if neatlogs else fn
     return wrap
 
 

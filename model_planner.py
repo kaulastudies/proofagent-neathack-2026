@@ -1,6 +1,20 @@
 """Structured, bounded Gemini proposals. Never executes generated commands."""
 import json
 import os
+import re
+
+def parse_gateway_proposal(content):
+    """Accept JSON or one complete JSON fence; never mine prose for code."""
+    if not isinstance(content, str) or len(content) > 6000:
+        raise ValueError('Invalid gateway response body')
+    text = content.strip()
+    fenced = re.fullmatch(r'```(?:json)?[ \t]*\r?\n(.*?)\r?\n```', text, re.DOTALL)
+    proposal = json.loads(fenced.group(1) if fenced else text)
+    if not isinstance(proposal, dict) or set(proposal) != {'expression','reason'} or not all(isinstance(v,str) for v in proposal.values()):
+        raise ValueError('Malformed gateway proposal')
+    if len(proposal['reason']) > 1500:
+        raise ValueError('Oversized explanation')
+    return proposal, 'complete_json_fence' if fenced else 'plain_json'
 
 class GeminiPlanner:
     def __init__(self, model='gemini-3.8-flash', api_key=None, client=None):
@@ -87,9 +101,6 @@ class LiteLLMPlanner:
         choice = result.choices[0]
         if choice.finish_reason != 'stop':
             raise ValueError('Incomplete model response; proposal was not applied')
-        proposal = json.loads(choice.message.content)
-        if not isinstance(proposal, dict) or set(proposal) != {'expression','reason'} or not all(isinstance(v,str) for v in proposal.values()):
-            raise ValueError('Malformed gateway proposal')
-        if len(proposal['reason']) > 1500:
-            raise ValueError('Oversized explanation')
+        proposal, normalization = parse_gateway_proposal(choice.message.content)
+        self.last_usage['response_normalization'] = normalization
         return proposal
