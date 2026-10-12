@@ -1,0 +1,9 @@
+{
+  "format_version": 1,
+  "recorded_at": "2026-10-12T08:44:41Z",
+  "repo": "/tmp/proofagent-graph-before-625bpk_7/repo",
+  "test_command": "python -m unittest discover -s tests -v",
+  "parser": "exit-code-only",
+  "exit_code": 1,
+  "results": {}
+}

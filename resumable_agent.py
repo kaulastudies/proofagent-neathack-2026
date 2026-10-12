@@ -44,6 +44,25 @@ def save_atomic(path, state):
 class InterruptedRun(RuntimeError):
     pass
 
+@trace('TOOL', 'verify_arithmetic_proposal')
+def evaluate_expression(fixture, source, config, hashes, expression):
+    validate_expression(expression, set(config['variables']))
+    candidate = source.replace(config['needle'], expression, 1)
+    with tempfile.TemporaryDirectory(prefix='proof-candidate-') as tmp:
+        folder = Path(tmp) / 'fixture'
+        shutil.copytree(fixture, folder, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+        (folder / 'calculator.py').write_text(candidate, encoding='utf-8', newline='')
+        verification = run_tests(folder)
+        observed = snapshot(folder)
+    expected = dict(hashes)
+    expected['calculator.py'] = hashlib.sha256(candidate.encode()).hexdigest()
+    unchanged = observed == expected and snapshot(fixture) == hashes
+    return {'verification': verification, 'files_unchanged_except_patch': unchanged,
+            'source_after_sha256': expected['calculator.py'],
+            'patch': ''.join(difflib.unified_diff(source.splitlines(True), candidate.splitlines(True),
+                        fromfile='a/calculator.py', tofile='b/calculator.py')),
+            'status': 'VERIFIED_PASS' if verification['passed'] and unchanged else 'VERIFIED_FAIL'}
+
 @trace('AGENT', 'feedback_driven_repair')
 def run(case, planner, state_path, max_attempts=3, stop_after=None):
     if case not in CASES or not 1 <= max_attempts <= 3:
@@ -56,12 +75,33 @@ def run(case, planner, state_path, max_attempts=3, stop_after=None):
         raise ValueError('Ambiguous repair location')
     state_path = Path(state_path)
     binding = {'case': case, 'fixture_sha256': hashes,
-               'planner': planner.identity, 'max_attempts': max_attempts}
+               'planner': planner.identity, 'max_attempts': max_attempts,
+               'verifier_sha256': {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                   for name in ('resumable_agent.py', 'verified_workflow.py', 'repair_agent.py')},
+               'case_spec_sha256': hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()}
     if state_path.exists():
         state = json.loads(state_path.read_text(encoding='utf-8'))
-        if state.get('binding') != binding or state.get('schema_version') != 1:
-            raise ValueError('Resume refused: fixture, planner, budget or schema changed')
-        if state['verdict'] in {'VERIFIED_PASS', 'VERIFIED_FAIL', 'ALREADY_PASSING'}:
+        if state.get('binding') != binding or state.get('schema_version') != 2:
+            raise ValueError('Resume refused: fixture, verifier, planner, budget or schema changed')
+        if state['verdict'] == 'VERIFIED_PASS':
+            try:
+                revalidation = evaluate_expression(fixture, source, config, hashes, state.get('accepted_expression'))
+            except (ValueError, SyntaxError, TypeError) as exc:
+                raise ValueError('Checkpoint revalidation rejected the saved expression') from exc
+            if revalidation['status'] != 'VERIFIED_PASS':
+                raise ValueError('Checkpoint revalidation failed independent acceptance tests')
+            state['resume_revalidation'] = revalidation
+            state['events'].append('completed_checkpoint_independently_revalidated')
+            save_atomic(state_path, state)
+            return state
+        if state['verdict'] in {'VERIFIED_FAIL', 'ALREADY_PASSING'}:
+            if state['verdict'] == 'ALREADY_PASSING':
+                with tempfile.TemporaryDirectory(prefix='proof-baseline-recheck-') as tmp:
+                    folder = Path(tmp) / 'fixture'
+                    shutil.copytree(fixture, folder, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
+                    revalidation = run_tests(folder)
+                if not revalidation['passed']:
+                    raise ValueError('Checkpoint revalidation failed: baseline is not passing')
             return state
         if state['verdict'] != 'RUNNING' or len(state['attempts']) > max_attempts:
             raise ValueError('Invalid resume state')
@@ -70,7 +110,7 @@ def run(case, planner, state_path, max_attempts=3, stop_after=None):
             folder = Path(tmp) / 'fixture'
             shutil.copytree(fixture, folder, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
             baseline = run_tests(folder)
-        state = {'schema_version': 1, 'binding': binding, 'verdict': 'RUNNING',
+        state = {'schema_version': 2, 'binding': binding, 'verdict': 'RUNNING',
                  'baseline': baseline, 'attempts': [], 'events': ['baseline_recorded']}
         if baseline['timed_out']:
             state['verdict'] = 'VERIFIED_FAIL'
@@ -95,21 +135,7 @@ def run(case, planner, state_path, max_attempts=3, stop_after=None):
         except (ValueError, SyntaxError, TypeError) as exc:
             attempt.update(status='REJECTED', reason=str(exc))
         else:
-            candidate = source.replace(config['needle'], expression, 1)
-            with tempfile.TemporaryDirectory(prefix='proof-candidate-') as tmp:
-                folder = Path(tmp) / 'fixture'
-                shutil.copytree(fixture, folder, ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
-                (folder / 'calculator.py').write_text(candidate, encoding='utf-8', newline='')
-                verification = run_tests(folder)
-                observed = snapshot(folder)
-            expected = dict(hashes)
-            expected['calculator.py'] = hashlib.sha256(candidate.encode()).hexdigest()
-            attempt.update(verification=verification, files_unchanged_except_patch=observed == expected,
-                source_after_sha256=expected['calculator.py'],
-                patch=''.join(difflib.unified_diff(source.splitlines(True), candidate.splitlines(True),
-                            fromfile='a/calculator.py', tofile='b/calculator.py')))
-            passed = verification['passed'] and observed == expected and snapshot(fixture) == hashes
-            attempt['status'] = 'VERIFIED_PASS' if passed else 'VERIFIED_FAIL'
+            attempt.update(evaluate_expression(fixture, source, config, hashes, expression))
         state['attempts'].append(attempt)
         state['events'].append('attempt_' + str(attempt['number']) + '_' + attempt['status'])
         if attempt['status'] == 'VERIFIED_PASS':

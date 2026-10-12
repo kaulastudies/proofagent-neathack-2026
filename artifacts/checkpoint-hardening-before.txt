@@ -1,0 +1,32 @@
+test_actual_process_interrupt_and_resume (test_resumable_agent.FeedbackTests.test_actual_process_interrupt_and_resume) ... ok
+test_all_cases_wrong_then_right (test_resumable_agent.FeedbackTests.test_all_cases_wrong_then_right) ... ok
+test_changed_planner_refuses_resume (test_resumable_agent.FeedbackTests.test_changed_planner_refuses_resume) ... ok
+test_changed_verifier_refuses_checkpoint (test_resumable_agent.FeedbackTests.test_changed_verifier_refuses_checkpoint) ... ok
+test_completed_success_is_independently_rechecked (test_resumable_agent.FeedbackTests.test_completed_success_is_independently_rechecked) ... ERROR
+test_edited_success_checkpoint_cannot_bypass_tests (test_resumable_agent.FeedbackTests.test_edited_success_checkpoint_cannot_bypass_tests) ... FAIL
+test_live_missing_key_never_falls_back (test_resumable_agent.FeedbackTests.test_live_missing_key_never_falls_back) ... ok
+test_model_feedback_and_structured_contract (test_resumable_agent.FeedbackTests.test_model_feedback_and_structured_contract) ... ok
+test_unsafe_and_excessive_candidates_rejected (test_resumable_agent.FeedbackTests.test_unsafe_and_excessive_candidates_rejected) ... ok
+
+======================================================================
+ERROR: test_completed_success_is_independently_rechecked (test_resumable_agent.FeedbackTests.test_completed_success_is_independently_rechecked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/fa4b5792cd50/repo/tests/test_resumable_agent.py", line 64, in test_completed_success_is_independently_rechecked
+    self.assertTrue(resumed['resume_revalidation']['verification']['passed'])
+                    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'resume_revalidation'
+
+======================================================================
+FAIL: test_edited_success_checkpoint_cannot_bypass_tests (test_resumable_agent.FeedbackTests.test_edited_success_checkpoint_cannot_bypass_tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/fa4b5792cd50/repo/tests/test_resumable_agent.py", line 54, in test_edited_success_checkpoint_cannot_bypass_tests
+    with self.assertRaisesRegex(ValueError, 'revalidation'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.840s
+
+FAILED (failures=1, errors=1)

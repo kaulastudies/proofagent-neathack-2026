@@ -43,6 +43,40 @@ class FeedbackTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Resume refused'):
                 run('tax', ReplayPlanner(['subtotal']), state)
 
+    def test_edited_success_checkpoint_cannot_bypass_tests(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / 'state.json'
+            planner = ReplayPlanner(CASES['tax']['replay'])
+            run('tax', planner, state)
+            saved = json.loads(state.read_text())
+            saved['accepted_expression'] = 'subtotal'
+            state.write_text(json.dumps(saved))
+            with self.assertRaisesRegex(ValueError, 'revalidation'):
+                run('tax', planner, state)
+
+    def test_completed_success_is_independently_rechecked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / 'state.json'
+            planner = ReplayPlanner(CASES['shipping']['replay'])
+            first = run('shipping', planner, state)
+            with patch.object(planner, 'propose', side_effect=AssertionError('No new proposal needed')):
+                resumed = run('shipping', planner, state)
+            self.assertTrue(resumed['resume_revalidation']['verification']['passed'])
+            self.assertTrue(resumed['resume_revalidation']['files_unchanged_except_patch'])
+            self.assertEqual(first['attempts'], resumed['attempts'])
+
+    def test_changed_verifier_refuses_checkpoint(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            state = Path(tmp) / 'state.json'
+            planner = ReplayPlanner(CASES['tax']['replay'])
+            with self.assertRaises(InterruptedRun):
+                run('tax', planner, state, stop_after=1)
+            saved = json.loads(state.read_text())
+            saved['binding']['verifier_sha256'] = {'resumable_agent.py': 'edited-verifier'}
+            state.write_text(json.dumps(saved))
+            with self.assertRaisesRegex(ValueError, 'Resume refused'):
+                run('tax', planner, state)
+
     def test_unsafe_and_excessive_candidates_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             result = run('discount', ReplayPlanner(['__import__("os").getcwd()', 'subtotal'] * 2), Path(tmp) / 's.json')
