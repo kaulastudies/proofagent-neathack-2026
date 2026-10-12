@@ -18,7 +18,7 @@ ProofAgent repairs arithmetic defects in three trusted billing fixtures. It runs
 - Offline replay mode for reproducible evidence, explicitly labeled as scripted.
 - Gemini structured-output planner implemented; live execution awaits an API key and validation.
 - Neatlogs ingestion for the earlier candidate-verification demo was observed on October 10: one rejected repair and one verified recovery. The actual Claude Haiku tax-repair trace was also observed after the gateway formatting fix; see `artifacts/neatlogs/`.
-- 27 regression tests pass locally. GitHub Actions checks Linux and Windows.
+- 31 regression tests pass locally. GitHub Actions checks Linux and Windows.
 
 Run `python demo-run.py` for a compact credential-free demonstration of all three cases and checkpoint recovery. All proposals in this demo are scripted offline replay; tests execute normally.
 
@@ -95,6 +95,10 @@ Entire instructions: https://hack.entire.io/neathacks-2026/ and https://github.c
 `docs/cfo/ProofAgent_Business_Plan_Updated.pdf` is the original cfo.ai export. Run `python verify_business_plan.py` to reproduce its arithmetic check. All financial forecasts are hypothetical; opening cash and runway are uncalculated. `business-plan-input.md` is an earlier input sheet, not the export. The starter scripts `agent.py`, `repair_agent.py` and `verified_workflow.py` are retained for reproducibility; their deterministic scenarios must be described accurately.
 
 No credentials belong in this repository.
+
+## Final submission packet
+
+See [SUBMISSION.md](SUBMISSION.md) for the project description, sponsor evidence, quote-post draft, demo narration, links and remaining submission steps. No entry has been submitted yet. During final review the neatlogs Incidents dashboard showed no published incidents; the verified evidence remains the actual before/after traces. Entire Graph outputs are published; session checkpoint tracking is enabled locally, while hook approval, a genuine checkpoint and mirroring remain pending.
 
 ## Optional Crustdata pilot research
 
