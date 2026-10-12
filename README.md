@@ -2,6 +2,9 @@
 
 ### Independent evidence for AI-proposed software repairs
 
+> **neatHack submission received · October 12, 2026**  
+> Reference: `745d0a84-9b92-46ca-a8d0-d4af0ac3af7f`. Receipt confirmed from the organizer's success page; judging is pending.
+
 [![Independent verification](https://github.com/kaulastudies/proofagent-neathack-2026/actions/workflows/verify.yml/badge.svg)](https://github.com/kaulastudies/proofagent-neathack-2026/actions/workflows/verify.yml)
 [![Stage](https://img.shields.io/badge/stage-prototype-blue)](#project-stages)
 [![Team](https://img.shields.io/badge/team-AI%20Evaluation%20Lab-6554C0)](#team-and-ownership)
@@ -124,7 +127,7 @@ Linked issues are the source of truth. This table records the October 12 plannin
 | --- | --- | --- |
 | 1. Working prototype | Complete | [#2 — engine, recovery and live evidence](https://github.com/kaulastudies/proofagent-neathack-2026/issues/2) |
 | 2. Independent review and integration evidence | Review / blocked | Nithya: [#1 verifier audit](https://github.com/kaulastudies/proofagent-neathack-2026/issues/1), [#3 evidence review](https://github.com/kaulastudies/proofagent-neathack-2026/issues/3). Rama: [#4 Entire](https://github.com/kaulastudies/proofagent-neathack-2026/issues/4), [#5 Incidents](https://github.com/kaulastudies/proofagent-neathack-2026/issues/5). |
-| 3. Submission | Pending confirmation | [#6 — shared readiness, team registration and receipt](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6) |
+| 3. Submission | Received; team details under review | [#6 — participant and quote-post verification](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6) |
 | 4. Broader evaluation and pilot research | Planned / API access blocked | Nithya: [#7 evaluation design](https://github.com/kaulastudies/proofagent-neathack-2026/issues/7). Rama: [#8 optional company research](https://github.com/kaulastudies/proofagent-neathack-2026/issues/8). |
 
 **Browse work:** [Nithya's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Anithyaravikumar1518-web) · [Rama's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Akaulastudies) · [Labels](https://github.com/kaulastudies/proofagent-neathack-2026/labels)
