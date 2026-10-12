@@ -1,6 +1,6 @@
 # ProofAgent — submission packet
 
-Prepared October 12, 2026. This is a draft packet, not a submitted entry.
+Submission received on October 12, 2026, confirmed by the organizer's success page supplied by Rama. Submission ID: `745d0a84-9b92-46ca-a8d0-d4af0ac3af7f`. This confirms receipt, not judging results or independent verification of the submitted quote-post.
 
 ## Project and team
 
@@ -84,7 +84,9 @@ Deadline announced in organizer Discord: October 12, 11:55 PM IST. Check Discord
 - [ ] Confirm Nithya's event check-in.
 - [ ] Publish a public quote of the exact launch post, with the video attached and all three required tags.
 - [ ] Copy the actual published quote URL into the submission form; complete the project/team fields and review.
-- [ ] Submit and preserve the success confirmation. Neither opening a draft nor completing only one step submits the entry.
+- [x] Submission receipt confirmed from the organizer's success page on October 12, 2026. Reference: `745d0a84-9b92-46ca-a8d0-d4af0ac3af7f`.
+
+The remaining unchecked items are verification follow-ups, not an instruction to submit again. The receipt does not independently establish Nithya's event registration or the contents of the published quote.
 
 ## Limits
 
