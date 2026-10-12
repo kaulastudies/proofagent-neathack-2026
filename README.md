@@ -21,6 +21,18 @@ A plausible patch can still calculate the wrong amount. ProofAgent separates pro
 
 The prototype covers discount calculation, tax ordering and shipping charges. Developers can inspect failures and reproduce recovery before expanding to broader repair tasks.
 
+## Use cases beyond the hackathon
+
+| Use case | What can be used today | Next development step |
+| --- | --- | --- |
+| Billing regression investigation | Reproduce discount, tax and shipping failures on bundled fixtures; inspect repair evidence | Add independently specified boundary cases before evaluating other billing rules |
+| Coding-agent evaluation | Separate a proposed repair from the acceptance verdict; inspect one recorded live-model result | Repeat controlled runs, report sample sizes and test false accepts using negative controls |
+| Teaching software verification | Run the credential-free demo and interruption/resume exercise | Publish a guided lab and scoring rubric under Nithya's technical supervision |
+| CI review of AI-generated changes | Run the existing regression suite on Linux and Windows | Add a stable report export and documented CI integration for trusted repair fixtures |
+| Early pilot discovery | Use the written business assumptions to frame questions for potential users | Define an opt-in pilot protocol; optional company research awaits API access |
+
+These are development directions, not claims of production deployment or existing customers. The current agent remains limited to the bundled trusted fixtures.
+
 ## Try it locally
 
 Python 3.10+ is required. The offline demonstration needs no credentials or third-party packages.
@@ -121,14 +133,16 @@ Nithya has accepted repository collaborator access. Rama confirmed her event reg
 
 ## Project stages
 
-Linked issues are the source of truth. This table records the October 12 planning snapshot.
+[GitHub milestones](https://github.com/kaulastudies/proofagent-neathack-2026/milestones) and their linked issues are the source of truth. This table records the October 12 planning snapshot.
 
 | Stage | Status | Delivery and review |
 | --- | --- | --- |
-| 1. Working prototype | Complete | [#2 — engine, recovery and live evidence](https://github.com/kaulastudies/proofagent-neathack-2026/issues/2) |
-| 2. Independent review and integration evidence | Review / blocked | Nithya: [#1 verifier audit](https://github.com/kaulastudies/proofagent-neathack-2026/issues/1), [#3 evidence review](https://github.com/kaulastudies/proofagent-neathack-2026/issues/3). Rama: [#4 Entire](https://github.com/kaulastudies/proofagent-neathack-2026/issues/4), [#5 Incidents](https://github.com/kaulastudies/proofagent-neathack-2026/issues/5). |
-| 3. Submission | Complete — receipt and team confirmed | [#6 — submission and registration](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6) |
-| 4. Broader evaluation and pilot research | Planned / API access blocked | Nithya: [#7 evaluation design](https://github.com/kaulastudies/proofagent-neathack-2026/issues/7). Rama: [#8 optional company research](https://github.com/kaulastudies/proofagent-neathack-2026/issues/8). |
+| [M1. Verified prototype](https://github.com/kaulastudies/proofagent-neathack-2026/milestone/1) | Complete | [#2 — engine, recovery and live evidence](https://github.com/kaulastudies/proofagent-neathack-2026/issues/2) |
+| [M2. Technical review](https://github.com/kaulastudies/proofagent-neathack-2026/milestone/2) | Review / blocked | Nithya: [#1 verifier audit](https://github.com/kaulastudies/proofagent-neathack-2026/issues/1), [#3 evidence review](https://github.com/kaulastudies/proofagent-neathack-2026/issues/3). Rama: [#4 Entire](https://github.com/kaulastudies/proofagent-neathack-2026/issues/4), [#5 Incidents](https://github.com/kaulastudies/proofagent-neathack-2026/issues/5). |
+| [M3. neatHack submission](https://github.com/kaulastudies/proofagent-neathack-2026/milestone/3) | Complete — receipt and team confirmed | [#6 — submission and registration](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6) |
+| [M4. Expansion and pilot readiness](https://github.com/kaulastudies/proofagent-neathack-2026/milestone/4) | Planned / API access blocked | Nithya: [#7 evaluation design](https://github.com/kaulastudies/proofagent-neathack-2026/issues/7). Rama: [#8 optional company research](https://github.com/kaulastudies/proofagent-neathack-2026/issues/8). |
+
+Post-hackathon deliverables also include [#9 — verification report export](https://github.com/kaulastudies/proofagent-neathack-2026/issues/9), led by Rama, and [#10 — teaching and pilot protocol](https://github.com/kaulastudies/proofagent-neathack-2026/issues/10), led by Nithya. M4 starts with a reviewed evaluation specification; reports and pilots follow that specification. Dates will be agreed after effort and availability are reviewed.
 
 **Browse work:** [Nithya's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Anithyaravikumar1518-web) · [Rama's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Akaulastudies) · [Labels](https://github.com/kaulastudies/proofagent-neathack-2026/labels)
 
@@ -141,7 +155,7 @@ Linked issues are the source of truth. This table records the October 12 plannin
 - `stage:pending`: action or confirmation is needed.
 - `stage:planned`: scoped future work that has not started.
 - `priority:high` and `priority:normal`: delivery order; `area:*` identifies the workstream.
-- `phase:prototype`, `phase:review`, `phase:submission` and `phase:expansion`: roadmap grouping labels. These labels are separate from GitHub's native Milestones.
+- `phase:prototype`, `phase:review`, `phase:submission` and `phase:expansion`: roadmap grouping labels. Native GitHub milestones now group the corresponding issues and track completion.
 
 Each issue has ownership and acceptance criteria. Record the relevant commit, reproduction command and result before closure. Nithya records technical findings; Rama resolves implementation follow-ups. An adapter alone does not establish a live integration.
 
