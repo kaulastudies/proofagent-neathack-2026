@@ -14,7 +14,7 @@ ProofAgent repairs arithmetic defects in three trusted billing fixtures. It runs
 - Offline replay mode for reproducible evidence, explicitly labeled as scripted.
 - Gemini structured-output planner implemented; live execution awaits an API key and validation.
 - Neatlogs ingestion for the earlier candidate-verification demo was observed on October 10: one rejected repair and one verified recovery. New model spans are not yet verified.
-- 18 regression tests pass locally. GitHub Actions checks Linux and Windows.
+- 21 regression tests pass locally. GitHub Actions checks Linux and Windows.
 
 Run `python demo-run.py` for a compact credential-free demonstration of all three cases and checkpoint recovery. All proposals in this demo are scripted offline replay; tests execute normally.
 
@@ -34,7 +34,7 @@ python resumable_agent.py --mode replay --case shipping --state artifacts/resume
 python resumable_agent.py --mode replay --case shipping --state artifacts/resume-demo.json
 ```
 
-Use a new state filename for a fresh run. A completed checkpoint returns its stored result. Checkpoints are local files, not signed attestations; protect them against manual modification. Changing fixture bytes, planner identity or attempt budget refuses resume.
+Use a new state filename for a fresh run. A completed successful checkpoint independently reruns acceptance tests before returning success. Checkpoints are local files, not signed attestations; protect them against manual modification. Changing fixture bytes, verifier source, case specification, planner identity or attempt budget refuses resume. Schema v1 states require a fresh run under v2.
 
 ## Live planner
 
@@ -65,14 +65,14 @@ This is a bounded repair/evaluation agent on bundled trusted fixtures. It does n
 - [x] Public event repository and reproducible test evidence
 - [x] Neatlogs cloud ingestion observed for candidate-verification demo
 - [ ] Live model run and traced feedback/recovery evidence
-- [ ] Entire enabled with a supported authenticated development agent and real checkpoint
-- [ ] cfo.ai business plan/export
+- [x] Entire Graph search, impact analysis and verification evidence captured in `artifacts/entire/` (Graph route; no session checkpoint)
+- [x] Original cfo.ai business-plan export and independent arithmetic review in `docs/cfo/` and `artifacts/cfo/`
 - [ ] Three-minute demonstration with all required integrations
 - [ ] Team co-participant registration verified separately from GitHub access
 - [ ] Official X submission during the announced window
 
 Entire instructions: https://hack.entire.io/neathacks-2026/ and https://github.com/entireio/cli . Install on a machine with a supported authenticated coding agent, enable in this repository, perform genuine agent work and preserve the real checkpoint. No checkpoint is fabricated here.
 
-`business-plan-input.md` contains assumptions for cfo.ai, not an exported plan. The starter scripts `agent.py`, `repair_agent.py` and `verified_workflow.py` are retained for reproducibility; their deterministic scenarios must be described accurately.
+`docs/cfo/ProofAgent_Business_Plan_Updated.pdf` is the original cfo.ai export. Run `python verify_business_plan.py` to reproduce its arithmetic check. All financial forecasts are hypothetical; opening cash and runway are uncalculated. `business-plan-input.md` is an earlier input sheet, not the export. The starter scripts `agent.py`, `repair_agent.py` and `verified_workflow.py` are retained for reproducibility; their deterministic scenarios must be described accurately.
 
 No credentials belong in this repository.

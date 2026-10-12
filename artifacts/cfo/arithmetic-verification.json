@@ -1,0 +1,287 @@
+{
+  "basis": "Hypothetical cfo.ai assumptions; not supplier quotes or business actuals",
+  "rounding": "round-half-up churn to whole accounts",
+  "scenarios": {
+    "Conservative": {
+      "months": [
+        {
+          "month": 1,
+          "accounts": [
+            10,
+            0,
+            0
+          ],
+          "revenue": "0",
+          "delivery_cost": "178.800",
+          "recurring_cost": "608.800",
+          "net_movement": "-608.800",
+          "burn": "608.800",
+          "cumulative_movement": "-608.800"
+        },
+        {
+          "month": 2,
+          "accounts": [
+            24,
+            1,
+            0
+          ],
+          "revenue": "29",
+          "delivery_cost": "202.920",
+          "recurring_cost": "632.920",
+          "net_movement": "-603.920",
+          "burn": "603.920",
+          "cumulative_movement": "-1212.720"
+        },
+        {
+          "month": 3,
+          "accounts": [
+            42,
+            3,
+            0
+          ],
+          "revenue": "87",
+          "delivery_cost": "242.360",
+          "recurring_cost": "672.360",
+          "net_movement": "-585.360",
+          "burn": "585.360",
+          "cumulative_movement": "-1798.080"
+        },
+        {
+          "month": 4,
+          "accounts": [
+            58,
+            6,
+            0
+          ],
+          "revenue": "174",
+          "delivery_cost": "291.840",
+          "recurring_cost": "721.840",
+          "net_movement": "-547.840",
+          "burn": "547.840",
+          "cumulative_movement": "-2345.920"
+        },
+        {
+          "month": 5,
+          "accounts": [
+            77,
+            10,
+            1
+          ],
+          "revenue": "439",
+          "delivery_cost": "409.760",
+          "recurring_cost": "839.760",
+          "net_movement": "-400.760",
+          "burn": "400.760",
+          "cumulative_movement": "-2746.680"
+        },
+        {
+          "month": 6,
+          "accounts": [
+            99,
+            14,
+            2
+          ],
+          "revenue": "704",
+          "delivery_cost": "530.320",
+          "recurring_cost": "960.320",
+          "net_movement": "-256.320",
+          "burn": "256.320",
+          "cumulative_movement": "-3003.000"
+        }
+      ],
+      "six_month_revenue": "1433",
+      "peak_funding_deficit": "3003.000",
+      "month6_break_even_accounts": 26,
+      "month6_gross_margin_percent": "24.67045454545454545454545455",
+      "summary_matches_pdf": true
+    },
+    "Base": {
+      "months": [
+        {
+          "month": 1,
+          "accounts": [
+            20,
+            0,
+            0
+          ],
+          "revenue": "0",
+          "delivery_cost": "187.600",
+          "recurring_cost": "617.600",
+          "net_movement": "-617.600",
+          "burn": "617.600",
+          "cumulative_movement": "-617.600"
+        },
+        {
+          "month": 2,
+          "accounts": [
+            48,
+            3,
+            0
+          ],
+          "revenue": "87",
+          "delivery_cost": "247.640",
+          "recurring_cost": "677.640",
+          "net_movement": "-590.640",
+          "burn": "590.640",
+          "cumulative_movement": "-1208.240"
+        },
+        {
+          "month": 3,
+          "accounts": [
+            83,
+            9,
+            1
+          ],
+          "revenue": "410",
+          "delivery_cost": "403.240",
+          "recurring_cost": "833.240",
+          "net_movement": "-423.240",
+          "burn": "423.240",
+          "cumulative_movement": "-1631.480"
+        },
+        {
+          "month": 4,
+          "accounts": [
+            125,
+            21,
+            3
+          ],
+          "revenue": "1056",
+          "delivery_cost": "689.800",
+          "recurring_cost": "1119.800",
+          "net_movement": "-63.800",
+          "burn": "63.800",
+          "cumulative_movement": "-1695.280"
+        },
+        {
+          "month": 5,
+          "accounts": [
+            172,
+            38,
+            6
+          ],
+          "revenue": "1996",
+          "delivery_cost": "1093.760",
+          "recurring_cost": "1523.760",
+          "net_movement": "472.240",
+          "burn": "0",
+          "cumulative_movement": "-1223.040"
+        },
+        {
+          "month": 6,
+          "accounts": [
+            225,
+            60,
+            10
+          ],
+          "revenue": "3230",
+          "delivery_cost": "1616.000",
+          "recurring_cost": "2046.000",
+          "net_movement": "1184.000",
+          "burn": "0",
+          "cumulative_movement": "-39.040"
+        }
+      ],
+      "six_month_revenue": "6779",
+      "peak_funding_deficit": "1695.280",
+      "month6_break_even_accounts": 29,
+      "month6_gross_margin_percent": "49.96904024767801857585139319",
+      "summary_matches_pdf": true
+    },
+    "Growth": {
+      "months": [
+        {
+          "month": 1,
+          "accounts": [
+            40,
+            0,
+            0
+          ],
+          "revenue": "0",
+          "delivery_cost": "205.200",
+          "recurring_cost": "635.200",
+          "net_movement": "-635.200",
+          "burn": "635.200",
+          "cumulative_movement": "-635.200"
+        },
+        {
+          "month": 2,
+          "accounts": [
+            96,
+            6,
+            0
+          ],
+          "revenue": "174",
+          "delivery_cost": "325.280",
+          "recurring_cost": "755.280",
+          "net_movement": "-581.280",
+          "burn": "581.280",
+          "cumulative_movement": "-1216.480"
+        },
+        {
+          "month": 3,
+          "accounts": [
+            166,
+            18,
+            2
+          ],
+          "revenue": "820",
+          "delivery_cost": "636.480",
+          "recurring_cost": "1066.480",
+          "net_movement": "-246.480",
+          "burn": "246.480",
+          "cumulative_movement": "-1462.960"
+        },
+        {
+          "month": 4,
+          "accounts": [
+            249,
+            41,
+            7
+          ],
+          "revenue": "2232",
+          "delivery_cost": "1250.920",
+          "recurring_cost": "1680.920",
+          "net_movement": "551.080",
+          "burn": "0",
+          "cumulative_movement": "-911.880"
+        },
+        {
+          "month": 5,
+          "accounts": [
+            344,
+            75,
+            15
+          ],
+          "revenue": "4410",
+          "delivery_cost": "2167.720",
+          "recurring_cost": "2597.720",
+          "net_movement": "1812.280",
+          "burn": "0",
+          "cumulative_movement": "900.400"
+        },
+        {
+          "month": 6,
+          "accounts": [
+            460,
+            119,
+            26
+          ],
+          "revenue": "7325",
+          "delivery_cost": "3383.000",
+          "recurring_cost": "3813.000",
+          "net_movement": "3512.000",
+          "burn": "0",
+          "cumulative_movement": "4412.400"
+        }
+      ],
+      "six_month_revenue": "14961",
+      "peak_funding_deficit": "1462.960",
+      "month6_break_even_accounts": 33,
+      "month6_gross_margin_percent": "53.81569965870307167235494881",
+      "summary_matches_pdf": true
+    }
+  },
+  "opening_cash": null,
+  "runway": null
+}
