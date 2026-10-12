@@ -92,7 +92,8 @@ This is a bounded repair/evaluation agent on bundled trusted fixtures. It does n
 - [x] Original cfo.ai business-plan export and independent arithmetic review in `docs/cfo/` and `artifacts/cfo/`
 - [x] 2:21 captioned evidence walkthrough covering all three required integrations
 - [ ] Team co-participant registration verified separately from GitHub access
-- [ ] Official X submission during the announced window
+- [x] Official form submission receipt confirmed October 12, 2026
+- [ ] Independently verify the published X quote and its tags/video
 
 Entire instructions: https://hack.entire.io/neathacks-2026/ and https://github.com/entireio/cli . Install on a machine with a supported authenticated coding agent, enable in this repository, perform genuine agent work and preserve the real checkpoint. No checkpoint is fabricated here.
 
@@ -102,7 +103,7 @@ No credentials belong in this repository.
 
 ## Final submission packet
 
-See [SUBMISSION.md](../SUBMISSION.md) for the project description, sponsor evidence, quote-post draft, demo narration, links and remaining submission steps. No entry has been submitted yet. During final review the neatlogs Incidents dashboard showed no published incidents; the verified evidence remains the actual before/after traces. Entire Graph outputs are published; session checkpoint tracking is enabled locally, while hook approval, a genuine checkpoint and mirroring remain pending.
+See [SUBMISSION.md](../SUBMISSION.md) for the project description, sponsor evidence, quote-post draft, demo narration, links and remaining submission steps. Submission received on October 12, 2026, confirmed by the organizer's success page supplied by Rama. Submission ID: `745d0a84-9b92-46ca-a8d0-d4af0ac3af7f`. This confirms receipt, not judging results or independent verification of the submitted quote-post. During final review the neatlogs Incidents dashboard showed no published incidents; the verified evidence remains the actual before/after traces. Entire Graph outputs are published; session checkpoint tracking is enabled locally, while hook approval, a genuine checkpoint and mirroring remain pending.
 
 ## Optional Crustdata pilot research
 
