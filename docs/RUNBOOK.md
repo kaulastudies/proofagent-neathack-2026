@@ -91,7 +91,7 @@ This is a bounded repair/evaluation agent on bundled trusted fixtures. It does n
 - [x] Entire Graph search, impact analysis and verification evidence captured in `artifacts/entire/` (Graph route; no session checkpoint)
 - [x] Original cfo.ai business-plan export and independent arithmetic review in `docs/cfo/` and `artifacts/cfo/`
 - [x] 2:21 captioned evidence walkthrough covering all three required integrations
-- [ ] Team co-participant registration verified separately from GitHub access
+- [x] Nithya's event registration confirmed by Rama on October 12, 2026
 - [x] Official form submission receipt confirmed October 12, 2026
 - [ ] Independently verify the published X quote and its tags/video
 
@@ -107,7 +107,7 @@ See [SUBMISSION.md](../SUBMISSION.md) for the project description, sponsor evide
 
 ## Optional Crustdata pilot research
 
-Nithya (`nithyaravikumar1518-web`) has accepted repository collaborator access; write permission was verified on October 12. Hackathon registration is a separate requirement.
+Nithya (`nithyaravikumar1518-web`) has accepted repository collaborator access; write permission was verified on October 12. Rama separately confirmed her hackathon registration on October 12, 2026.
 
 `python crustdata_pilots.py` privately prompts for `CRUSTDATA_API_KEY` and performs one company search, with at most five results, no automatic retry and no pagination. It keeps company name, domain, description and Crustdata ID only. The resulting private report labels matches as research candidates, never customers, revenue or verified demand. It does not send outreach or change the repair acceptance gate.
 
