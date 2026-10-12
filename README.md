@@ -117,7 +117,7 @@ The 2:21 video is a silent, captioned artifact walkthrough. One real model repai
 
 Both share project direction and release readiness. Nithya supervises technical review across workstreams; Rama implements and supplies reproducible evidence. These assignments take effect October 12, 2026; they are not retrospective claims of completed contributions. Reviews remain open until findings are recorded.
 
-Nithya has accepted repository collaborator access. Event registration is separate: the latest supplied submission form listed one builder, with confirmation tracked in [#6](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6).
+Nithya has accepted repository collaborator access. Rama confirmed her event registration on October 12, 2026. Submission receipt and team confirmation are recorded in [#6](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6).
 
 ## Project stages
 
@@ -127,7 +127,7 @@ Linked issues are the source of truth. This table records the October 12 plannin
 | --- | --- | --- |
 | 1. Working prototype | Complete | [#2 — engine, recovery and live evidence](https://github.com/kaulastudies/proofagent-neathack-2026/issues/2) |
 | 2. Independent review and integration evidence | Review / blocked | Nithya: [#1 verifier audit](https://github.com/kaulastudies/proofagent-neathack-2026/issues/1), [#3 evidence review](https://github.com/kaulastudies/proofagent-neathack-2026/issues/3). Rama: [#4 Entire](https://github.com/kaulastudies/proofagent-neathack-2026/issues/4), [#5 Incidents](https://github.com/kaulastudies/proofagent-neathack-2026/issues/5). |
-| 3. Submission | Received; team details under review | [#6 — participant and quote-post verification](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6) |
+| 3. Submission | Complete — receipt and team confirmed | [#6 — submission and registration](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6) |
 | 4. Broader evaluation and pilot research | Planned / API access blocked | Nithya: [#7 evaluation design](https://github.com/kaulastudies/proofagent-neathack-2026/issues/7). Rama: [#8 optional company research](https://github.com/kaulastudies/proofagent-neathack-2026/issues/8). |
 
 **Browse work:** [Nithya's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Anithyaravikumar1518-web) · [Rama's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Akaulastudies) · [Labels](https://github.com/kaulastudies/proofagent-neathack-2026/labels)
@@ -141,6 +141,7 @@ Linked issues are the source of truth. This table records the October 12 plannin
 - `stage:pending`: action or confirmation is needed.
 - `stage:planned`: scoped future work that has not started.
 - `priority:high` and `priority:normal`: delivery order; `area:*` identifies the workstream.
+- `phase:prototype`, `phase:review`, `phase:submission` and `phase:expansion`: roadmap grouping labels. These labels are separate from GitHub's native Milestones.
 
 Each issue has ownership and acceptance criteria. Record the relevant commit, reproduction command and result before closure. Nithya records technical findings; Rama resolves implementation follow-ups. An adapter alone does not establish a live integration.
 
