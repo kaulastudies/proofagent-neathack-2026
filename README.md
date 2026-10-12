@@ -1,115 +1,159 @@
-# ProofAgent — neatHack 2026
+# ProofAgent
 
-**An agent's repair is a proposal. Success needs independent evidence.**
+### Independent evidence for AI-proposed software repairs
 
-Team: **AI Evaluation Lab**. Event code lives here; the pre-existing AI Evaluation Lab repository remains separate.
+[![Independent verification](https://github.com/kaulastudies/proofagent-neathack-2026/actions/workflows/verify.yml/badge.svg)](https://github.com/kaulastudies/proofagent-neathack-2026/actions/workflows/verify.yml)
+[![Stage](https://img.shields.io/badge/stage-prototype-blue)](#project-stages)
+[![Team](https://img.shields.io/badge/team-AI%20Evaluation%20Lab-6554C0)](#team-and-ownership)
 
-**[Watch the 2:21 demo](artifacts/ProofAgent_neatHack_demo.mp4)** · [Live verification report](artifacts/neatlogs/live-tax-verified.json) · [cfo.ai business plan](docs/cfo/ProofAgent_Business_Plan_Updated.pdf)
+ProofAgent checks proposed billing repairs against unchanged acceptance tests, rejects failing candidates, and resumes after interruption. Every verdict is backed by a patch, test results and saved execution state.
 
-The demo is a silent, captioned walkthrough of actual artifacts, rather than an interactive screen recording. It distinguishes the real Claude run from scripted recovery tests.
+**[Watch the demo](https://youtu.be/YTLfsrqZRc0)** · [Download video](artifacts/ProofAgent_neatHack_demo.mp4) · [Live evidence](artifacts/neatlogs/LIVE_EVIDENCE.md) · [Task tracker](https://github.com/kaulastudies/proofagent-neathack-2026/issues) · [Submission packet](SUBMISSION.md)
 
-ProofAgent repairs arithmetic defects in three trusted billing fixtures. It runs the failing baseline, asks a planner for a restricted arithmetic expression, applies the proposal in a temporary copy, and checks unchanged acceptance tests. Failed proposals feed back to the planner. A verified attempt is saved atomically so another process can resume without repeating earlier attempts.
+[Quick start](#try-it-locally) · [Architecture](#how-it-works) · [Evidence](#evidence-you-can-inspect) · [Integrations](#integration-status) · [Team](#team-and-ownership) · [Stages](#project-stages)
 
-## What works
+## Why we built it
 
-- Discount, tax-order and shipping defect cases, with real Python subprocess tests.
-- A bounded three-attempt loop, restricted expression grammar, immutable fixture hashes and patch diffs.
-- Actual process interruption and recovery from a saved checkpoint.
-- Offline replay mode for reproducible evidence, explicitly labeled as scripted.
-- Gemini structured-output planner implemented; live execution awaits an API key and validation.
-- Neatlogs ingestion for the earlier candidate-verification demo was observed on October 10: one rejected repair and one verified recovery. The actual Claude Haiku tax-repair trace was also observed after the gateway formatting fix; see `artifacts/neatlogs/`.
-- 31 regression tests pass locally. GitHub Actions checks Linux and Windows.
+A plausible patch can still calculate the wrong amount. ProofAgent separates proposal generation from acceptance: trusted tests decide whether a repair satisfies the fixture's requirements.
 
-Run `python demo-run.py` for a compact credential-free demonstration of all three cases and checkpoint recovery. All proposals in this demo are scripted offline replay; tests execute normally.
+The prototype covers discount calculation, tax ordering and shipping charges. Developers can inspect failures and reproduce recovery before expanding to broader repair tasks.
 
-## Run without credentials
+## Try it locally
 
-Python 3.10+; no dependencies required for offline runs.
+Python 3.10+ is required. The offline demonstration needs no credentials or third-party packages.
 
 ```sh
+git clone https://github.com/kaulastudies/proofagent-neathack-2026.git
+cd proofagent-neathack-2026
 python -m unittest discover -s tests -v
-python resumable_agent.py --mode replay --case tax --state artifacts/my-tax-run.json
+python demo-run.py
 ```
 
-Interrupt then resume in a **new process** (first command intentionally exits 75):
+Offline proposals are scripted; fixture tests execute in real subprocesses. The last recorded local suite passed **31 tests**. The CI badge links to the current Linux/Windows workflow.
+
+<details>
+<summary><strong>Try interruption and recovery</strong></summary>
+
+Run these separately. The first intentionally exits with code 75; the second resumes in a new process.
 
 ```sh
-python resumable_agent.py --mode replay --case shipping --state artifacts/resume-demo.json --stop-after 1
-python resumable_agent.py --mode replay --case shipping --state artifacts/resume-demo.json
+python resumable_agent.py --mode replay --case shipping --state artifacts/my-resume.json --stop-after 1
+python resumable_agent.py --mode replay --case shipping --state artifacts/my-resume.json
 ```
 
-Use a new state filename for a fresh run. A completed successful checkpoint independently reruns acceptance tests before returning success. Checkpoints are local files, not signed attestations; protect them against manual modification. Changing fixture bytes, verifier source, case specification, planner identity or attempt budget refuses resume. Schema v1 states require a fresh run under v2.
+Use a new state filename for a fresh experiment. Successful completed states rerun acceptance tests before returning success. Changes to fixture bytes, verifier code, case specification, planner identity or attempt budget refuse resume.
 
-## Free hackathon model gateway
+</details>
 
-The organizer supplies an OpenAI-compatible LiteLLM endpoint with Nova/Claude model aliases. Use `live_demo.py` (default provider `litellm`, model `claude-haiku`) for the shared team key and actual neatlogs tracing:
+<details>
+<summary><strong>Run a real model with neatlogs tracing</strong></summary>
 
 ```sh
 python -m venv .venv
-# Windows: use .\.venv\Scripts\python.exe in place of .venv/bin/python
+# Windows: replace .venv/bin/python with .venv\Scripts\python.exe
 .venv/bin/python -m pip install -r requirements-hackathon.txt
 .venv/bin/python live_demo.py --case tax
 ```
 
-The launcher prompts privately for the LiteLLM key and neatlogs project key; it does not write keys to disk. The gateway adapter limits each response to 384 tokens, disables SDK automatic retries, and accepts plain JSON or one complete JSON fence, and rejects prose, malformed or truncated proposals. The independent acceptance gate decides success. Token counts and latency are saved in candidate evidence when returned by the provider; dollar cost remains unknown unless supported by provider billing evidence. The organizer's shared $20 budget is enforced by the gateway, not this application.
+The launcher privately prompts for LiteLLM and neatlogs keys. Never commit credentials. The default model is `claude-haiku`; calls consume the team's shared allowance. Output is limited to 384 tokens and automatic SDK retries are disabled. A failed live call is not replaced by replay results.
 
-A real Claude Haiku tax repair passed unchanged independent tests on October 12 and its five-span trace was observed in neatlogs. The earlier live call failed JSON parsing; accepting one complete JSON fence fixed that formatting failure without changing acceptance tests. The verified call reported 598 input + 150 output tokens, 748 total, and 9.344 seconds of model latency. See `artifacts/neatlogs/` for the report and screenshots. The earlier scripted candidate-rejection demo and interruption tests remain separately labeled evidence. No replay fallback is substituted for a failed live call.
+The [technical runbook](docs/RUNBOOK.md) covers provider setup, the alternative Gemini adapter and video reproduction.
 
-## Gemini planner (alternative)
+</details>
 
-Use an isolated environment; do not install into your global Python environment.
+## How it works
 
-```sh
-python -m venv .venv
-# Windows: .\.venv\Scripts\python.exe
-.venv/bin/python -m pip install -r requirements-live.txt
-# Configure GEMINI_API_KEY privately in your local shell/secret manager.
-.venv/bin/python resumable_agent.py --mode live --case tax --state artifacts/live-tax.json
+```mermaid
+flowchart TD
+    A[Trusted fixture and failing baseline] --> B[Planner proposes restricted expression]
+    B --> C[Validate and patch temporary copy]
+    C --> D{Unchanged tests pass?}
+    D -->|No, attempts remain| B
+    D -->|Yes| E[Save verified evidence]
+    D -->|Budget exhausted| F[Save failed verdict]
+    E --> G[Resume and independently retest]
 ```
 
-The adapter follows Google's Interactions structured-output API. `--model` selects the model; default `gemini-3.8-flash`. Missing credentials or provider errors stop the run, preserving completed attempts. They do not silently substitute replay results. At most three proposals per fresh run; a provider interruption before saving a proposal may require another request on resume. No financial spending cap is enforced by the application.
+Proposals use a restricted arithmetic grammar. The loop permits at most three attempts. Original fixtures and acceptance tests remain unchanged; checkpoint writes are atomic.
 
-## Neatlogs
+## Evidence you can inspect
 
-Set `NEATLOGS_API_KEY` privately and add `--traces` to an agent command. Live mode enables `google_genai` automatic instrumentation. Import/init order is important: the entry point initializes instrumentation before constructing the model client. Always inspect actual ingestion before claiming cloud integration.
+| Evidence | Recorded result | Artifact |
+| --- | --- | --- |
+| Live Claude Haiku tax repair | Four unchanged tests passed; 748 tokens; 9.344 s model latency | [Run report](artifacts/neatlogs/live-tax-verified.json) |
+| Parser failure and follow-up | First call rejected fenced JSON; after a developer parser fix, a new live run passed | [Before/after traces](artifacts/neatlogs/LIVE_EVIDENCE.md) |
+| Recovery | Regression coverage for interruption, resume and completed-state revalidation | [Tests](tests/) |
+| Entire Graph | Search, impact analysis and verification supporting the recovery change | [Provenance](artifacts/entire/PROVENANCE.md) |
+| Financial assumptions | Original cfo.ai plan with independently checked arithmetic | [Plan](docs/cfo/ProofAgent_Business_Plan_Updated.pdf) · [Review](docs/cfo/VERIFY.md) |
 
-The earlier live evidence can be regenerated using `python trace_demo.py`; it privately prompts for the project key. Recorded trace IDs: `bc9c2e5f96c4d63b9e4eb9f1d9ab1b79` (rejected repair), `bab3fd866bebe19ed15c8c06629223c4` (verified second candidate). Account access is required to view the project's traces.
+<details>
+<summary><strong>What the demonstration establishes</strong></summary>
 
-## Scope and limits
+The 2:21 video is a silent, captioned artifact walkthrough. One real model repair was verified. Scripted wrong-proposal rejection and recovery tests are separate evidence. The parser change was a developer integration fix, not an autonomous correction within that model run. Dollar cost was not measured. These results do not establish broad model reliability or correctness beyond the included cases.
 
-This is a bounded repair/evaluation agent on bundled trusted fixtures. It does not repair arbitrary repositories, execute generated shell commands, or provide a sandbox for untrusted Python. Baseline/test subprocesses execute the trusted fixture. Passing these small acceptance suites is evidence for these cases, not proof of general correctness. Retry state is atomic but not concurrency-safe; use one process per state file.
+</details>
 
-## Submission readiness
+## Integration status
 
-- [x] Public event repository and reproducible test evidence
-- [x] Neatlogs cloud ingestion observed for candidate-verification demo
-- [x] Live Claude Haiku tax repair independently verified and ingested into neatlogs; before/after parser-fix traces in `artifacts/neatlogs/`
-- [x] Entire Graph search, impact analysis and verification evidence captured in `artifacts/entire/` (Graph route; no session checkpoint)
-- [x] Original cfo.ai business-plan export and independent arithmetic review in `docs/cfo/` and `artifacts/cfo/`
-- [x] 2:21 captioned evidence walkthrough covering all three required integrations
-- [ ] Team co-participant registration verified separately from GitHub access
-- [ ] Official X submission during the announced window
+| Tool | Role | Verified scope and next step |
+| --- | --- | --- |
+| neatlogs | Model/tool traces and failure diagnosis | Real traces published. No published incident at last dashboard review; [#5](https://github.com/kaulastudies/proofagent-neathack-2026/issues/5). |
+| Entire | Code discovery and impact review | Graph outputs published. Genuine session checkpoint and mirror pending; [#4](https://github.com/kaulastudies/proofagent-neathack-2026/issues/4). |
+| cfo.ai | Six-month pricing, adoption and cost assumptions | Original export and arithmetic review published. Forecasts hypothetical; runway uncalculated. |
+| LiteLLM / Claude | Actual proposal generation | One tax repair verified. Broader evaluation planned in [#7](https://github.com/kaulastudies/proofagent-neathack-2026/issues/7). |
+| Crustdata — optional | Research for potential pilot companies | Module tested with synthetic responses; live access pending in [#8](https://github.com/kaulastudies/proofagent-neathack-2026/issues/8). |
 
-Entire instructions: https://hack.entire.io/neathacks-2026/ and https://github.com/entireio/cli . Install on a machine with a supported authenticated coding agent, enable in this repository, perform genuine agent work and preserve the real checkpoint. No checkpoint is fabricated here.
+## Team and ownership
 
-`docs/cfo/ProofAgent_Business_Plan_Updated.pdf` is the original cfo.ai export. Run `python verify_business_plan.py` to reproduce its arithmetic check. All financial forecasts are hypothetical; opening cash and runway are uncalculated. `business-plan-input.md` is an earlier input sheet, not the export. The starter scripts `agent.py`, `repair_agent.py` and `verified_workflow.py` are retained for reproducibility; their deterministic scenarios must be described accurately.
+**AI Evaluation Lab — Nithya Ravikumar and Rama Chandra**
 
-No credentials belong in this repository.
+| Team member | Assigned role | Responsibility |
+| --- | --- | --- |
+| [Nithya Ravikumar](https://github.com/nithyaravikumar1518-web) | Technical supervision and evaluation lead | Acceptance criteria, verifier review, negative controls, evidence quality and technical release review |
+| [Rama Chandra](https://github.com/kaulastudies) | Engineering and delivery lead | Agent implementation, provider integrations, CI, reproducibility and submission coordination |
 
-## Final submission packet
+Both share project direction and release readiness. Nithya supervises technical review across workstreams; Rama implements and supplies reproducible evidence. These assignments take effect October 12, 2026; they are not retrospective claims of completed contributions. Reviews remain open until findings are recorded.
 
-See [SUBMISSION.md](SUBMISSION.md) for the project description, sponsor evidence, quote-post draft, demo narration, links and remaining submission steps. No entry has been submitted yet. During final review the neatlogs Incidents dashboard showed no published incidents; the verified evidence remains the actual before/after traces. Entire Graph outputs are published; session checkpoint tracking is enabled locally, while hook approval, a genuine checkpoint and mirroring remain pending.
+Nithya has accepted repository collaborator access. Event registration is separate: the latest supplied submission form listed one builder, with confirmation tracked in [#6](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6).
 
-## Optional Crustdata pilot research
+## Project stages
 
-Nithya (`nithyaravikumar1518-web`) has accepted repository collaborator access; write permission was verified on October 12. Hackathon registration is a separate requirement.
+Linked issues are the source of truth. This table records the October 12 planning snapshot.
 
-`python crustdata_pilots.py` privately prompts for `CRUSTDATA_API_KEY` and performs one company search, with at most five results, no automatic retry and no pagination. It keeps company name, domain, description and Crustdata ID only. The resulting private report labels matches as research candidates, never customers, revenue or verified demand. It does not send outreach or change the repair acceptance gate.
+| Stage | Status | Delivery and review |
+| --- | --- | --- |
+| 1. Working prototype | Complete | [#2 — engine, recovery and live evidence](https://github.com/kaulastudies/proofagent-neathack-2026/issues/2) |
+| 2. Independent review and integration evidence | Review / blocked | Nithya: [#1 verifier audit](https://github.com/kaulastudies/proofagent-neathack-2026/issues/1), [#3 evidence review](https://github.com/kaulastudies/proofagent-neathack-2026/issues/3). Rama: [#4 Entire](https://github.com/kaulastudies/proofagent-neathack-2026/issues/4), [#5 Incidents](https://github.com/kaulastudies/proofagent-neathack-2026/issues/5). |
+| 3. Submission | Pending confirmation | [#6 — shared readiness, team registration and receipt](https://github.com/kaulastudies/proofagent-neathack-2026/issues/6) |
+| 4. Broader evaluation and pilot research | Planned / API access blocked | Nithya: [#7 evaluation design](https://github.com/kaulastudies/proofagent-neathack-2026/issues/7). Rama: [#8 optional company research](https://github.com/kaulastudies/proofagent-neathack-2026/issues/8). |
 
-Status: implemented and tested with synthetic responses; live Crustdata verification is pending a separate Crustdata API key and confirmed hackathon credit access. The LiteLLM key cannot authenticate Crustdata. No Crustdata usage is claimed in the existing demo.
+**Browse work:** [Nithya's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Anithyaravikumar1518-web) · [Rama's assignments](https://github.com/kaulastudies/proofagent-neathack-2026/issues?q=is%3Aissue+is%3Aopen+assignee%3Akaulastudies) · [Labels](https://github.com/kaulastudies/proofagent-neathack-2026/labels)
 
-API documentation: https://docs.crustdata.com/company-docs/search/introduction . Actual credit consumption remains unknown until account usage is checked.
+<details>
+<summary><strong>How work is tracked and reviewed</strong></summary>
 
-## Reproduce the video
+- `stage:complete`: evidence exists and the issue is closed.
+- `stage:review`: assigned for review; approval is not implied.
+- `stage:blocked`: an external dependency or missing evidence prevents completion.
+- `stage:pending`: action or confirmation is needed.
+- `stage:planned`: scoped future work that has not started.
+- `priority:high` and `priority:normal`: delivery order; `area:*` identifies the workstream.
 
-On Linux with DejaVu fonts, Pillow, Poppler (`pdftoppm`) and FFmpeg installed, run `python render_demo.py`. The renderer uses the committed trace screenshots, live verification report and original cfo.ai export; it makes no model calls. Scene timings are recorded in `artifacts/demo-scenes.json`. Generated frames are excluded from Git.
+Each issue has ownership and acceptance criteria. Record the relevant commit, reproduction command and result before closure. Nithya records technical findings; Rama resolves implementation follow-ups. An adapter alone does not establish a live integration.
+
+</details>
+
+## Scope and limitations
+
+ProofAgent operates on bundled trusted Python fixtures. It is not an arbitrary repository repair system or a sandbox for untrusted code. Saved state is unsigned and intended for one process per file. Passing a small acceptance suite does not prove general correctness.
+
+The project is a prototype with no confirmed customers or revenue. Research matches are candidates only. Temporary hackathon credits are separate from recurring operating costs.
+
+## Repository guide
+
+- [Technical runbook](docs/RUNBOOK.md): detailed commands, setup and video reproduction.
+- [Submission packet](SUBMISSION.md): sponsor evidence and final submission requirements.
+- [Regression tests](tests/): executable checks for prototype behavior.
+- [Evidence artifacts](artifacts/): screenshots, run reports and Graph outputs.
+
+This repository contains the neatHack event build. The broader AI Evaluation Lab project is maintained separately.
