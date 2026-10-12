@@ -1,4 +1,4 @@
-"""Prompt for local secrets privately and run genuine Gemini + neatlogs repair.
+"""Prompt for local secrets privately and run genuine model + neatlogs repair.
 
 No replay fallback. No secrets saved to a file. Use your isolated environment.
 """
@@ -12,22 +12,25 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--case', choices=['discount','tax','shipping'], default='tax')
     parser.add_argument('--state', type=Path)
-    parser.add_argument('--model', default='gemini-3.8-flash')
+    parser.add_argument('--provider', choices=['litellm','gemini'], default='litellm')
+    parser.add_argument('--model')
     args = parser.parse_args()
-    for name, label in [('GEMINI_API_KEY','Gemini API key'), ('NEATLOGS_API_KEY','Neatlogs project key')]:
+    model_key = ('LITELLM_API_KEY','Hackathon LiteLLM key') if args.provider=='litellm' else ('GEMINI_API_KEY','Gemini API key')
+    for name, label in [model_key, ('NEATLOGS_API_KEY','Neatlogs project key')]:
         if not os.getenv(name):
             value = getpass.getpass(label + ' (hidden): ').strip()
             if not value:
                 raise SystemExit('Live demo requires both keys; no request was made.')
             os.environ[name] = value
     import neatlogs
-    neatlogs.init(workflow_name='proofagent-live-demo', instrumentations=['google_genai'])
+    neatlogs.init(workflow_name='proofagent-live-demo', instrumentations=['openai' if args.provider=='litellm' else 'google_genai'])
     try:
-        from model_planner import GeminiPlanner
+        from model_planner import GeminiPlanner, LiteLLMPlanner
         from resumable_agent import run
         target = args.state or Path('artifacts') / ('live-demo-' + args.case + '.json')
-        result = run(args.case, GeminiPlanner(args.model), target)
-        print(json.dumps({'mode':'live-gemini', 'case':args.case, 'verdict':result['verdict'],
+        planner = LiteLLMPlanner(args.model or 'claude-haiku') if args.provider=='litellm' else GeminiPlanner(args.model or 'gemini-3.8-flash')
+        result = run(args.case, planner, target)
+        print(json.dumps({'mode':'live-' + args.provider, 'case':args.case, 'verdict':result['verdict'],
             'attempts':len(result['attempts']), 'report':str(target)},indent=2))
         print('Inspect the actual neatlogs trace before claiming ingestion.')
         return 0 if result['verdict'] == 'VERIFIED_PASS' else 1

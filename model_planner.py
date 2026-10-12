@@ -40,3 +40,56 @@ class ReplayPlanner:
         if index >= len(self.proposals):
             raise ValueError('Offline replay exhausted')
         return {'expression': self.proposals[index], 'reason': 'Scripted offline replay; not model reasoning'}
+
+class LiteLLMPlanner:
+    """Hackathon OpenAI-compatible gateway, with local JSON/DSL validation.
+
+    The gateway is not assumed to enforce structured-output schemas. Provider
+    output must pass our JSON validation and the independent arithmetic gate.
+    """
+    BASE_URL = 'https://litellm.vision.aivar.app/v1'
+    MODELS = {'nova-micro', 'nova-lite', 'nova-pro', 'nova-2-lite',
+              'claude-haiku', 'claude-sonnet-4.6', 'claude-opus-4.6'}
+
+    def __init__(self, model='claude-haiku', api_key=None, client=None):
+        if model not in self.MODELS:
+            raise ValueError('Choose a model from the organizer-provided gateway list')
+        self.model = model
+        self.identity = 'litellm:' + self.BASE_URL + ':' + model
+        self.last_usage = None
+        if client is None:
+            key = api_key or os.getenv('LITELLM_API_KEY')
+            if not key:
+                raise ValueError('Live gateway mode requires LITELLM_API_KEY; no replay fallback')
+            from openai import OpenAI
+            client = OpenAI(base_url=self.BASE_URL, api_key=key, timeout=30.0, max_retries=0)
+        self.client = client
+
+    def propose(self, context):
+        import time
+        prompt = ('Repair the one arithmetic expression in this trusted billing fixture. '
+                  'Respond with exactly one JSON object containing only string fields '
+                  '"expression" and "reason". No markdown or extra text. '
+                  'The expression may contain only the listed variables, numeric literals, '
+                  '+ - * / and parentheses. Never change acceptance tests or return commands. '
+                  'Use prior test feedback to revise incorrect proposals.\n' + json.dumps(context, sort_keys=True))
+        started = time.monotonic()
+        result = self.client.chat.completions.create(model=self.model,
+            messages=[{'role':'user','content':prompt}], max_tokens=384)
+        usage = getattr(result, 'usage', None)
+        self.last_usage = {'provider':'hackathon-litellm','model':self.model,
+            'latency_ms':round((time.monotonic()-started)*1000,2),
+            'prompt_tokens':getattr(usage,'prompt_tokens',None),
+            'completion_tokens':getattr(usage,'completion_tokens',None),
+            'total_tokens':getattr(usage,'total_tokens',None),
+            'max_output_tokens':384, 'sdk_auto_retries':0,
+            'cost_usd':None, 'cost_note':'No dollar cost claimed without provider billing evidence'}
+        choice = result.choices[0]
+        if choice.finish_reason != 'stop':
+            raise ValueError('Incomplete model response; proposal was not applied')
+        proposal = json.loads(choice.message.content)
+        if not isinstance(proposal, dict) or set(proposal) != {'expression','reason'} or not all(isinstance(v,str) for v in proposal.values()):
+            raise ValueError('Malformed gateway proposal')
+        if len(proposal['reason']) > 1500:
+            raise ValueError('Oversized explanation')
+        return proposal

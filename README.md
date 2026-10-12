@@ -14,7 +14,7 @@ ProofAgent repairs arithmetic defects in three trusted billing fixtures. It runs
 - Offline replay mode for reproducible evidence, explicitly labeled as scripted.
 - Gemini structured-output planner implemented; live execution awaits an API key and validation.
 - Neatlogs ingestion for the earlier candidate-verification demo was observed on October 10: one rejected repair and one verified recovery. New model spans are not yet verified.
-- 21 regression tests pass locally. GitHub Actions checks Linux and Windows.
+- 25 regression tests pass locally. GitHub Actions checks Linux and Windows.
 
 Run `python demo-run.py` for a compact credential-free demonstration of all three cases and checkpoint recovery. All proposals in this demo are scripted offline replay; tests execute normally.
 
@@ -36,7 +36,22 @@ python resumable_agent.py --mode replay --case shipping --state artifacts/resume
 
 Use a new state filename for a fresh run. A completed successful checkpoint independently reruns acceptance tests before returning success. Checkpoints are local files, not signed attestations; protect them against manual modification. Changing fixture bytes, verifier source, case specification, planner identity or attempt budget refuses resume. Schema v1 states require a fresh run under v2.
 
-## Live planner
+## Free hackathon model gateway
+
+The organizer supplies an OpenAI-compatible LiteLLM endpoint with Nova/Claude model aliases. Use `live_demo.py` (default provider `litellm`, model `claude-haiku`) for the shared team key and actual neatlogs tracing:
+
+```sh
+python -m venv .venv
+# Windows: use .\.venv\Scripts\python.exe in place of .venv/bin/python
+.venv/bin/python -m pip install -r requirements-hackathon.txt
+.venv/bin/python live_demo.py --case tax
+```
+
+The launcher prompts privately for the LiteLLM key and neatlogs project key; it does not write keys to disk. The gateway adapter limits each response to 384 tokens, disables SDK automatic retries, and rejects malformed or truncated proposals. The independent acceptance gate decides success. Token counts and latency are saved in candidate evidence when returned by the provider; dollar cost remains unknown unless supported by provider billing evidence. The organizer's shared $20 budget is enforced by the gateway, not this application.
+
+The live gateway adapter is implemented and tested offline. A successful actual gateway call and trace ingestion still need to be verified. No replay fallback is substituted for a failed live call.
+
+## Gemini planner (alternative)
 
 Use an isolated environment; do not install into your global Python environment.
 

@@ -129,6 +129,8 @@ def run(case, planner, state_path, max_attempts=3, stop_after=None):
         # A provider failure preserves state; resume does not replay verified attempts.
         proposal = planner.propose(context)
         attempt = {'number': len(state['attempts']) + 1, 'proposal': proposal}
+        if getattr(planner, 'last_usage', None) is not None:
+            attempt['model_usage'] = dict(planner.last_usage)
         expression = proposal.get('expression')
         try:
             validate_expression(expression, set(config['variables']))
